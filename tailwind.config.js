@@ -5,8 +5,9 @@ export default {
     extend: {
       colors: {
         domadoRed: '#f14d30',
-        domadoGreen: '#2eb42e',
-        domadoSky: '#26c6f8',
+        domadoGreen: '#3eae3c',
+        domadoSkyTop: '#188bff',
+        domadoSkyBottom: '#54d7ff',
         /** use this with random alpha */
         domadoCloud: '#faf2ef',
       },
