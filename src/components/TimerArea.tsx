@@ -29,7 +29,7 @@ function TimerArea(props: TimerAreaProp) {
           id="timer-upper"
           className="flex h-full w-full flex-col justify-end pt-8"
         >
-          <div className="font-santokki flex flex-1 flex-col items-center justify-center">
+          <div className="flex flex-1 flex-col items-center justify-center font-santokki">
             <span className="text-3xl">domado</span>
             <span className="text-8xl">도마도</span>
             <span className="text-4xl">
