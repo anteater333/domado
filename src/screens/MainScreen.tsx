@@ -1,21 +1,40 @@
-import TimerArea, { TimerStatusType } from '@/components/TimerArea';
-import { useState } from 'react';
+import TimerArea from '@/components/TimerArea';
+import {
+  timerDoneState,
+  timerStatusState,
+  timerTypeState,
+} from '@/libs/recoil/timer';
+import { useEffect } from 'react';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 /**
  * MainScreen은 TimerArea를 포함하고 있다.
  * MainScreen은 현재 화면에 표시할 Timer의 정보를 조작한다.
  */
 function MainScreen() {
-  const [timerStatus, setTimerStatus] = useState<TimerStatusType>('pomodoro');
+  const [timerType, setTimerType] = useRecoilState(timerTypeState);
+  const [timerStatus, setTimerStatus] = useRecoilState(timerStatusState);
+  const timerDone = useRecoilValue(timerDoneState);
+
+  useEffect(() => {
+    if (timerDone) {
+      // 임시 테스트 코드
+      setTimerType((prev) => {
+        if (prev === 'pomodoro') return 'short-break';
+        else if (prev === 'short-break') return 'long-break';
+        else return 'pomodoro';
+      });
+    }
+  }, [setTimerType, timerDone]);
 
   return (
     <div id="app-main-screen" className="h-full w-full">
       <TimerArea
-        type={timerStatus}
         onStart={() => {
-          if (timerStatus === 'long-break') setTimerStatus('pomodoro');
-          else if (timerStatus === 'short-break') setTimerStatus('long-break');
-          else setTimerStatus('short-break');
+          setTimerStatus((prev) => {
+            if (prev === 'ready') return 'running';
+            else return 'ready';
+          });
         }}
       />
     </div>
