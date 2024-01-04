@@ -1,7 +1,8 @@
-export type TimerStatusType = 'pomodoro' | 'short-break' | 'long-break';
+import { formattedTimerState, timerTypeState } from '@/libs/recoil/timer';
+import { useState } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
-export interface TimerAreaProp {
-  type: TimerStatusType;
+interface TimerAreaProp {
   onStart: () => void;
 }
 
@@ -11,6 +12,10 @@ export interface TimerAreaProp {
  * @returns
  */
 function TimerArea(props: TimerAreaProp) {
+  const formattedTimer = useRecoilValue(formattedTimerState);
+
+  const [timerType, setTimerType] = useRecoilState(timerTypeState);
+
   return (
     <>
       <div
@@ -18,9 +23,9 @@ function TimerArea(props: TimerAreaProp) {
         className={`
         flex h-full w-full flex-col
         ${
-          props.type === 'pomodoro'
+          timerType === 'pomodoro'
             ? 'bg-domadoRed'
-            : props.type === 'short-break'
+            : timerType === 'short-break'
               ? 'bg-domadoGreen'
               : 'bg-domadoSky'
         }`}
@@ -33,9 +38,9 @@ function TimerArea(props: TimerAreaProp) {
             <span className="text-3xl">domado</span>
             <span className="text-8xl">도마도</span>
             <span className="text-4xl">
-              {props.type === 'pomodoro'
+              {timerType === 'pomodoro'
                 ? '뽀모도로'
-                : props.type === 'short-break'
+                : timerType === 'short-break'
                   ? '짧은 휴식'
                   : '긴 휴식'}{' '}
               타이머
@@ -48,14 +53,20 @@ function TimerArea(props: TimerAreaProp) {
             {Array.from({ length: 15 }).map((_, i: number) => {
               if ((i + 3) % 5 === 0)
                 return (
-                  <div className="flex w-4 flex-col items-center">
+                  <div
+                    key={`notch-${i}`}
+                    className="flex w-4 flex-col items-center"
+                  >
                     <span className="mb-2 text-6xl font-bold">{i + 3}</span>
                     <div id={`notch-${i}`} className="h-8 w-2 bg-white"></div>
                   </div>
                 );
               else
                 return (
-                  <div className="flex w-4 flex-col items-center">
+                  <div
+                    key={`notch-${i}`}
+                    className="flex w-4 flex-col items-center"
+                  >
                     <div id={`notch-${i}`} className="h-4 w-1 bg-white"></div>
                   </div>
                 );
@@ -79,7 +90,7 @@ function TimerArea(props: TimerAreaProp) {
             <span className="cursor-default select-none text-2xl"></span>
           </div>
           <div className="mt-4">
-            <span className="text-8xl font-bold">10:00</span>
+            <span className="text-8xl font-bold">{formattedTimer}</span>
           </div>
           <div className="mt-16 flex flex-col gap-4 text-center">
             <span className="text-4xl">목표</span>
@@ -91,9 +102,9 @@ function TimerArea(props: TimerAreaProp) {
           <div className="flex flex-1 items-end">
             <button
               className={`transform rounded-3xl border-4 border-white bg-transparent text-4xl font-bold transition duration-200 hover:border-white hover:bg-white ${
-                props.type === 'pomodoro'
+                timerType === 'pomodoro'
                   ? 'hover:text-domadoRed'
-                  : props.type === 'short-break'
+                  : timerType === 'short-break'
                     ? 'hover:text-domadoGreen'
                     : 'hover:text-domadoSkyBottom'
               }`}
