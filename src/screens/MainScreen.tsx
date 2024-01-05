@@ -32,8 +32,19 @@ function MainScreen() {
       <TimerArea
         onStart={() => {
           setTimerStatus((prev) => {
-            if (prev === 'ready') return 'running';
+            if (prev === 'ready' || prev === 'paused') return 'running';
             else return 'ready';
+          });
+        }}
+        onPause={() => {
+          // setTimerStatus((prev) => {
+          //   if (prev === 'paused') return 'running';
+          //   else return 'paused';
+          // });
+          setTimerType((prev) => {
+            if (prev === 'pomodoro') return 'short-break';
+            else if (prev === 'short-break') return 'long-break';
+            else return 'pomodoro';
           });
         }}
       />
