@@ -38,7 +38,6 @@ export default function GlobalTimer() {
     }
 
     return () => {
-      console.log(intervalId, timerStatus);
       if (intervalId) clearInterval(intervalId);
     };
   }, [currentTimerGoal, setTimerDone, setTimerSeconds, timerStatus]);

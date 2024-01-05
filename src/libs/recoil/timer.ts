@@ -84,3 +84,29 @@ export const timerDoneState = atom<boolean>({
   key: 'timerDoneState',
   default: false,
 });
+
+/**
+ * 뽀모도로의 현재 진행 상태 (전체 뽀모도로 중 현재 몇 번째 단계를 지나고 있는가?)
+ */
+export const pomodoroState = atom<number>({
+  key: 'pomodoroState',
+  default: 0,
+});
+
+/**
+ * 긴 휴식 주기 (뽀모도로 N번 진행 시 다음 휴식은 긴 휴식)
+ */
+export const longBreakPeriodState = atom<number>({
+  key: 'longBreakPeriodState',
+  default: 4,
+});
+
+/**
+ * 뽀모도로의 전체 구조 (긴 휴식 주기 * 2)
+ */
+export const pomodoroTotalProgressState = selector<number>({
+  key: 'pomodoroTotalProgressState',
+  get: ({ get }) => {
+    return get(longBreakPeriodState) * 2;
+  },
+});
