@@ -1,19 +1,22 @@
 import TimerArea from '@/components/TimerArea';
 import {
+  MAX_TIME,
   timerDoneState,
+  timerState,
   timerStatusState,
   timerTypeState,
 } from '@/libs/recoil/timer';
 import { useEffect } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
 
 /**
  * MainScreen은 TimerArea를 포함하고 있다.
  * MainScreen은 현재 화면에 표시할 Timer의 정보를 조작한다.
  */
 function MainScreen() {
-  const [timerType, setTimerType] = useRecoilState(timerTypeState);
-  const [timerStatus, setTimerStatus] = useRecoilState(timerStatusState);
+  const setTimerType = useSetRecoilState(timerTypeState);
+  const setTimerStatus = useSetRecoilState(timerStatusState);
+  const setTimer = useSetRecoilState(timerState);
   const timerDone = useRecoilValue(timerDoneState);
 
   useEffect(() => {
@@ -38,6 +41,13 @@ function MainScreen() {
         }}
         onStop={() => {
           setTimerStatus('ready');
+        }}
+        onOneMoreMin={() => {
+          setTimer((prev) => {
+            const newVal = prev + 60;
+            if (newVal > MAX_TIME) return MAX_TIME;
+            else return newVal;
+          });
         }}
       />
     </div>

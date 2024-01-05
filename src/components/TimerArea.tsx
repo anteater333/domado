@@ -10,6 +10,7 @@ interface TimerAreaProp {
   onStart: () => void;
   onPause: () => void;
   onStop: () => void;
+  onOneMoreMin: () => void;
 }
 
 /**
@@ -74,22 +75,11 @@ function TimerArea(props: TimerAreaProp) {
           <div className="mt-4">
             <span className="text-6xl font-bold">{formattedTimer}</span>
           </div>
-          <div className="flex w-96 flex-1 items-end justify-center gap-4">
-            <button
-              className={`flex-1 transform rounded-3xl border-4 border-white bg-transparent px-0 text-4xl font-bold transition duration-200 hover:border-white hover:bg-white ${
-                timerType === 'pomodoro'
-                  ? 'hover:text-domadoRed'
-                  : timerType === 'short-break'
-                    ? 'hover:text-domadoGreen'
-                    : 'hover:text-domadoSkyBottom'
-              }`}
-              onClick={
-                timerStatus === 'running' ? props.onPause : props.onStart
-              }
+          <div className="flex flex-1 flex-col-reverse items-center gap-4">
+            <div
+              id="play-button-container"
+              className="flex w-96 items-end justify-center gap-4"
             >
-              {timerStatus !== 'running' ? '시작' : '일시정지'}
-            </button>
-            {timerStatus === 'paused' ? (
               <button
                 className={`flex-1 transform rounded-3xl border-4 border-white bg-transparent px-0 text-4xl font-bold transition duration-200 hover:border-white hover:bg-white ${
                   timerType === 'pomodoro'
@@ -98,10 +88,35 @@ function TimerArea(props: TimerAreaProp) {
                       ? 'hover:text-domadoGreen'
                       : 'hover:text-domadoSkyBottom'
                 }`}
-                onClick={props.onStop}
+                onClick={
+                  timerStatus === 'running' ? props.onPause : props.onStart
+                }
               >
-                초기화
+                {timerStatus !== 'running' ? '시작' : '일시정지'}
               </button>
+              {timerStatus === 'paused' ? (
+                <button
+                  className={`flex-1 transform rounded-3xl border-4 border-white bg-transparent px-0 text-4xl font-bold transition duration-200 hover:border-white hover:bg-white ${
+                    timerType === 'pomodoro'
+                      ? 'hover:text-domadoRed'
+                      : timerType === 'short-break'
+                        ? 'hover:text-domadoGreen'
+                        : 'hover:text-domadoSkyBottom'
+                  }`}
+                  onClick={props.onStop}
+                >
+                  초기화
+                </button>
+              ) : undefined}
+            </div>
+            {timerStatus !== 'ready' ? (
+              <span
+                id="one-more-min-button"
+                className="cursor-pointer select-none text-xl"
+                onClick={props.onOneMoreMin}
+              >
+                +1:00
+              </span>
             ) : undefined}
           </div>
         </div>
