@@ -1,9 +1,10 @@
 import { formattedTimerState, timerTypeState } from '@/libs/recoil/timer';
-import { useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import NotchSlider from './NotchSlider';
 
 interface TimerAreaProp {
   onStart: () => void;
+  onPause: () => void;
 }
 
 /**
@@ -46,32 +47,7 @@ function TimerArea(props: TimerAreaProp) {
               타이머
             </span>
           </div>
-          <div
-            id="notch-container"
-            className="flex cursor-grab items-end justify-evenly"
-          >
-            {Array.from({ length: 15 }).map((_, i: number) => {
-              if ((i + 3) % 5 === 0)
-                return (
-                  <div
-                    key={`notch-${i}`}
-                    className="flex w-4 flex-col items-center"
-                  >
-                    <span className="mb-2 text-6xl font-bold">{i + 3}</span>
-                    <div id={`notch-${i}`} className="h-8 w-2 bg-white"></div>
-                  </div>
-                );
-              else
-                return (
-                  <div
-                    key={`notch-${i}`}
-                    className="flex w-4 flex-col items-center"
-                  >
-                    <div id={`notch-${i}`} className="h-4 w-1 bg-white"></div>
-                  </div>
-                );
-            })}
-          </div>
+          <NotchSlider />
         </div>
         <div
           id="timer-gap"
@@ -90,7 +66,7 @@ function TimerArea(props: TimerAreaProp) {
             <span className="cursor-default select-none text-2xl"></span>
           </div>
           <div className="mt-4">
-            <span className="text-8xl font-bold">{formattedTimer}</span>
+            <span className="text-6xl font-bold">{formattedTimer}</span>
           </div>
           <div className="mt-16 flex flex-col gap-4 text-center">
             <span className="text-4xl">목표</span>
@@ -99,7 +75,7 @@ function TimerArea(props: TimerAreaProp) {
               분
             </div>
           </div>
-          <div className="flex flex-1 items-end">
+          <div className="flex flex-1 items-end gap-4">
             <button
               className={`transform rounded-3xl border-4 border-white bg-transparent text-4xl font-bold transition duration-200 hover:border-white hover:bg-white ${
                 timerType === 'pomodoro'
@@ -111,6 +87,18 @@ function TimerArea(props: TimerAreaProp) {
               onClick={props.onStart}
             >
               시작
+            </button>
+            <button
+              className={`transform rounded-3xl border-4 border-white bg-transparent text-4xl font-bold transition duration-200 hover:border-white hover:bg-white ${
+                timerType === 'pomodoro'
+                  ? 'hover:text-domadoRed'
+                  : timerType === 'short-break'
+                    ? 'hover:text-domadoGreen'
+                    : 'hover:text-domadoSkyBottom'
+              }`}
+              onClick={props.onPause}
+            >
+              일시정지
             </button>
           </div>
         </div>
