@@ -23,7 +23,7 @@ function NotchSlider() {
           transform: `translateX(-${translateBySeconds}rem)`,
         }}
       >
-        {Array.from({ length: 100 }).map((_, i: number) => {
+        {Array.from({ length: 101 }).map((_, i: number) => {
           if (i % 5 === 0)
             return (
               <div
