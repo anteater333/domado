@@ -31,21 +31,13 @@ function MainScreen() {
     <div id="app-main-screen" className="h-full w-full">
       <TimerArea
         onStart={() => {
-          setTimerStatus((prev) => {
-            if (prev === 'ready' || prev === 'paused') return 'running';
-            else return 'ready';
-          });
+          setTimerStatus('running');
         }}
         onPause={() => {
-          // setTimerStatus((prev) => {
-          //   if (prev === 'paused') return 'running';
-          //   else return 'paused';
-          // });
-          setTimerType((prev) => {
-            if (prev === 'pomodoro') return 'short-break';
-            else if (prev === 'short-break') return 'long-break';
-            else return 'pomodoro';
-          });
+          setTimerStatus('paused');
+        }}
+        onStop={() => {
+          setTimerStatus('ready');
         }}
       />
     </div>
