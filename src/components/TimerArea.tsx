@@ -1,6 +1,6 @@
 import { formattedTimerState, timerTypeState } from '@/libs/recoil/timer';
-import { useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import NotchSlider from './NotchSlider';
 
 interface TimerAreaProp {
   onStart: () => void;
@@ -46,32 +46,7 @@ function TimerArea(props: TimerAreaProp) {
               타이머
             </span>
           </div>
-          <div
-            id="notch-container"
-            className="flex cursor-grab items-end justify-evenly"
-          >
-            {Array.from({ length: 15 }).map((_, i: number) => {
-              if ((i + 3) % 5 === 0)
-                return (
-                  <div
-                    key={`notch-${i}`}
-                    className="flex w-4 flex-col items-center"
-                  >
-                    <span className="mb-2 text-6xl font-bold">{i + 3}</span>
-                    <div id={`notch-${i}`} className="h-8 w-2 bg-white"></div>
-                  </div>
-                );
-              else
-                return (
-                  <div
-                    key={`notch-${i}`}
-                    className="flex w-4 flex-col items-center"
-                  >
-                    <div id={`notch-${i}`} className="h-4 w-1 bg-white"></div>
-                  </div>
-                );
-            })}
-          </div>
+          <NotchSlider />
         </div>
         <div
           id="timer-gap"

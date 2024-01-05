@@ -23,7 +23,7 @@ export const timerStatusState = atom<TimerStatusType>({
 export const timerGoalsState = atom<Record<TimerType, number>>({
   key: 'timerGoalsState',
   default: {
-    pomodoro: 3, // 1500 25분
+    pomodoro: 300, // 1500 25분
     'short-break': 3, // 300 5분
     'long-break': 3, // 900 15분
   },
