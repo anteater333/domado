@@ -23,14 +23,14 @@ function NotchSlider() {
           transform: `translateX(-${translateBySeconds}rem)`,
         }}
       >
-        {Array.from({ length: 100 }).map((_, i: number) => {
+        {Array.from({ length: 101 }).map((_, i: number) => {
           if (i % 5 === 0)
             return (
               <div
                 key={`notch-${i}`}
                 className="mr-20 flex w-4 min-w-4 flex-col items-center"
               >
-                <span className="mb-2 text-6xl font-bold">{i}</span>
+                <span className="mb-2 select-none text-6xl font-bold">{i}</span>
                 <div id={`notch-${i}`} className="h-8 w-2 bg-white"></div>
               </div>
             );

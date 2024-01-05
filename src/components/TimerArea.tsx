@@ -1,10 +1,16 @@
-import { formattedTimerState, timerTypeState } from '@/libs/recoil/timer';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import {
+  formattedTimerState,
+  timerStatusState,
+  timerTypeState,
+} from '@/libs/recoil/timer';
+import { useRecoilValue } from 'recoil';
 import NotchSlider from './NotchSlider';
 
 interface TimerAreaProp {
   onStart: () => void;
   onPause: () => void;
+  onStop: () => void;
+  onOneMoreMin: () => void;
 }
 
 /**
@@ -15,7 +21,8 @@ interface TimerAreaProp {
 function TimerArea(props: TimerAreaProp) {
   const formattedTimer = useRecoilValue(formattedTimerState);
 
-  const [timerType, setTimerType] = useRecoilState(timerTypeState);
+  const timerType = useRecoilValue(timerTypeState);
+  const timerStatus = useRecoilValue(timerStatusState);
 
   return (
     <>
@@ -68,38 +75,49 @@ function TimerArea(props: TimerAreaProp) {
           <div className="mt-4">
             <span className="text-6xl font-bold">{formattedTimer}</span>
           </div>
-          <div className="mt-16 flex flex-col gap-4 text-center">
-            <span className="text-4xl">목표</span>
-            <div className="text-4xl">
-              <input className="w-24 border-b-4 bg-transparent text-center focus-visible:outline-none" />
-              분
+          <div className="flex flex-1 flex-col-reverse items-center gap-4">
+            <div
+              id="play-button-container"
+              className="flex w-96 items-end justify-center gap-4"
+            >
+              <button
+                className={`flex-1 transform rounded-3xl border-4 border-white bg-transparent px-0 text-4xl font-bold transition duration-200 hover:border-white hover:bg-white ${
+                  timerType === 'pomodoro'
+                    ? 'hover:text-domadoRed'
+                    : timerType === 'short-break'
+                      ? 'hover:text-domadoGreen'
+                      : 'hover:text-domadoSkyBottom'
+                }`}
+                onClick={
+                  timerStatus === 'running' ? props.onPause : props.onStart
+                }
+              >
+                {timerStatus !== 'running' ? '시작' : '일시정지'}
+              </button>
+              {timerStatus === 'paused' ? (
+                <button
+                  className={`flex-1 transform rounded-3xl border-4 border-white bg-transparent px-0 text-4xl font-bold transition duration-200 hover:border-white hover:bg-white ${
+                    timerType === 'pomodoro'
+                      ? 'hover:text-domadoRed'
+                      : timerType === 'short-break'
+                        ? 'hover:text-domadoGreen'
+                        : 'hover:text-domadoSkyBottom'
+                  }`}
+                  onClick={props.onStop}
+                >
+                  초기화
+                </button>
+              ) : undefined}
             </div>
-          </div>
-          <div className="flex flex-1 items-end gap-4">
-            <button
-              className={`transform rounded-3xl border-4 border-white bg-transparent text-4xl font-bold transition duration-200 hover:border-white hover:bg-white ${
-                timerType === 'pomodoro'
-                  ? 'hover:text-domadoRed'
-                  : timerType === 'short-break'
-                    ? 'hover:text-domadoGreen'
-                    : 'hover:text-domadoSkyBottom'
-              }`}
-              onClick={props.onStart}
-            >
-              시작
-            </button>
-            <button
-              className={`transform rounded-3xl border-4 border-white bg-transparent text-4xl font-bold transition duration-200 hover:border-white hover:bg-white ${
-                timerType === 'pomodoro'
-                  ? 'hover:text-domadoRed'
-                  : timerType === 'short-break'
-                    ? 'hover:text-domadoGreen'
-                    : 'hover:text-domadoSkyBottom'
-              }`}
-              onClick={props.onPause}
-            >
-              일시정지
-            </button>
+            {timerStatus !== 'ready' ? (
+              <span
+                id="one-more-min-button"
+                className="cursor-pointer select-none text-xl"
+                onClick={props.onOneMoreMin}
+              >
+                +1:00
+              </span>
+            ) : undefined}
           </div>
         </div>
       </div>

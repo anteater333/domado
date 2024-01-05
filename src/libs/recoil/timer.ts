@@ -1,5 +1,8 @@
 import { DefaultValue, atom, selector } from 'recoil';
 
+export const MIN_TIME = 0;
+export const MAX_TIME = 100 * 60;
+
 export type TimerType = 'pomodoro' | 'short-break' | 'long-break';
 export type TimerStatusType = 'paused' | 'running' | 'ready' | 'error';
 
