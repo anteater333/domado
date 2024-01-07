@@ -4,7 +4,10 @@ import {
   timerTypeState,
 } from '@/libs/recoil/timer';
 import { useRecoilValue } from 'recoil';
+import { Link } from 'react-router-dom';
+
 import NotchSlider from './NotchSlider';
+import ProgressIndicator from './ProgressIndicator';
 
 interface TimerAreaProp {
   onStart: () => void;
@@ -40,9 +43,14 @@ function TimerArea(props: TimerAreaProp) {
       >
         <div
           id="timer-upper"
-          className="flex h-full w-full flex-col justify-end pt-8"
+          className="flex h-full w-full flex-col justify-end pt-4"
         >
-          <div className="flex flex-1 flex-col items-center justify-center font-santokki">
+          <div id="header-area" className="flex justify-center">
+            <Link to={'/preference'}>
+              <ProgressIndicator />
+            </Link>
+          </div>
+          <div className="mt-8 flex flex-1 flex-col items-center font-santokki">
             <span className="text-3xl">domado</span>
             <span className="text-8xl">도마도</span>
             <span className="text-4xl">

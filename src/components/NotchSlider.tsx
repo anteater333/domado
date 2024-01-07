@@ -13,13 +13,11 @@ function NotchSlider() {
   );
 
   return (
-    <div id="notch-slider" className="cursor-grab overflow-hidden">
+    <div id="notch-slider" className="overflow-hidden">
       <div
         id="notch-container"
         className="relative left-1/2 -ml-2 flex items-end transition-transform"
         style={{
-          // 한 칸당 6rem = (눈금너비) + (눈금당 우측 마진)
-          // 1초당 0.1rem
           transform: `translateX(-${translateBySeconds}rem)`,
         }}
       >

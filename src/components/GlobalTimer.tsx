@@ -1,6 +1,7 @@
 import {
   currentTimerGoalState,
-  timerDoneState,
+  pomodoroState,
+  pomodoroTotalProgressState,
   timerState,
   timerStatusState,
 } from '@/libs/recoil/timer';
@@ -14,15 +15,15 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 export default function GlobalTimer() {
   const [timerSeconds, setTimerSeconds] = useRecoilState(timerState);
   const [timerStatus, setTimerStatus] = useRecoilState(timerStatusState);
-  const setTimerDone = useSetRecoilState(timerDoneState);
   const currentTimerGoal = useRecoilValue(currentTimerGoalState);
+  const pomodoroTotal = useRecoilValue(pomodoroTotalProgressState);
+  const setPomodoroProgress = useSetRecoilState(pomodoroState);
 
   useEffect(() => {
     let intervalId = 0;
     switch (timerStatus) {
       case 'running':
         // 타이머 실행
-        setTimerDone(false);
         intervalId = setInterval(() => {
           setTimerSeconds((sec) => sec - 1);
         }, 1000);
@@ -38,17 +39,20 @@ export default function GlobalTimer() {
     }
 
     return () => {
-      console.log(intervalId, timerStatus);
       if (intervalId) clearInterval(intervalId);
     };
-  }, [currentTimerGoal, setTimerDone, setTimerSeconds, timerStatus]);
+  }, [currentTimerGoal, setTimerSeconds, timerStatus]);
 
   useEffect(() => {
     if (timerSeconds <= 0) {
-      setTimerDone(true);
+      // 타이머 종료 시 뽀모도로 진행도를 1 올리고 타이머 초기화\
+      setPomodoroProgress((prev) => {
+        const newv = prev + 1;
+        if (newv >= pomodoroTotal) return 0;
+        else return newv;
+      });
       setTimerStatus('ready');
     }
-  }, [setTimerDone, setTimerStatus, timerSeconds]);
-
+  }, [pomodoroTotal, setPomodoroProgress, setTimerStatus, timerSeconds]);
   return null;
 }

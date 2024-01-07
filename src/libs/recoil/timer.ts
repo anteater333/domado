@@ -1,15 +1,27 @@
 import { DefaultValue, atom, selector } from 'recoil';
+import { recoilPersist } from 'recoil-persist';
 
-export const MIN_TIME = 0;
-export const MAX_TIME = 100 * 60;
+const { persistAtom } = recoilPersist({
+  key: 'localStorage',
+  storage: localStorage,
+});
+
+export const MAX_PERIOD = 16;
+export const MIN_PERIOD = 1;
+export const MAX_MIN = 100;
+export const MIN_MIN = 1;
+
+export const MIN_TIME = 1;
+export const MAX_TIME = MAX_MIN * 60;
 
 export type TimerType = 'pomodoro' | 'short-break' | 'long-break';
-export type TimerStatusType = 'paused' | 'running' | 'ready' | 'error';
 
 export const timerTypeState = atom<TimerType>({
   key: 'timerTypeState',
   default: 'pomodoro',
 });
+
+export type TimerStatusType = 'paused' | 'running' | 'ready' | 'error';
 
 /**
  * 전역 타이머의 진행 상태
@@ -30,6 +42,7 @@ export const timerGoalsState = atom<Record<TimerType, number>>({
     'short-break': 300, // 300 5분
     'long-break': 900, // 900 15분
   },
+  effects_UNSTABLE: [persistAtom],
 });
 
 /**
@@ -77,10 +90,28 @@ export const formattedTimerState = selector<string>({
 });
 
 /**
- * 타이머가 종료되었을 때 토글되는 Boolean 상태.
- * 필요한 컴포넌트에서 이 값을 useEffect로 관측해 이벤트를 탐지.
+ * 뽀모도로의 현재 진행 상태 (전체 뽀모도로 중 현재 몇 번째 단계를 지나고 있는가?)
  */
-export const timerDoneState = atom<boolean>({
-  key: 'timerDoneState',
-  default: false,
+export const pomodoroState = atom<number>({
+  key: 'pomodoroState',
+  default: 0,
+});
+
+/**
+ * 긴 휴식 주기 (뽀모도로 N번 진행 시 다음 휴식은 긴 휴식)
+ */
+export const longBreakPeriodState = atom<number>({
+  key: 'longBreakPeriodState',
+  default: 4,
+  effects_UNSTABLE: [persistAtom],
+});
+
+/**
+ * 뽀모도로의 전체 구조 (긴 휴식 주기 * 2)
+ */
+export const pomodoroTotalProgressState = selector<number>({
+  key: 'pomodoroTotalProgressState',
+  get: ({ get }) => {
+    return get(longBreakPeriodState) * 2;
+  },
 });
