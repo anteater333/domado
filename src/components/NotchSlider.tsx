@@ -13,7 +13,7 @@ function NotchSlider() {
   );
 
   return (
-    <div id="notch-slider" className="cursor-grab overflow-hidden">
+    <div id="notch-slider" className="overflow-hidden">
       <div
         id="notch-container"
         className="relative left-1/2 -ml-2 flex items-end transition-transform"

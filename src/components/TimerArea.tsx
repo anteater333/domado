@@ -50,7 +50,7 @@ function TimerArea(props: TimerAreaProp) {
               <ProgressIndicator />
             </Link>
           </div>
-          <div className="flex flex-1 flex-col items-center justify-center font-santokki">
+          <div className="mt-8 flex flex-1 flex-col items-center font-santokki">
             <span className="text-3xl">domado</span>
             <span className="text-8xl">도마도</span>
             <span className="text-4xl">
