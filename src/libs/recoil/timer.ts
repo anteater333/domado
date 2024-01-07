@@ -1,7 +1,12 @@
 import { DefaultValue, atom, selector } from 'recoil';
 
-export const MIN_TIME = 0;
-export const MAX_TIME = 100 * 60;
+export const MAX_PERIOD = 16;
+export const MIN_PERIOD = 1;
+export const MAX_MIN = 100;
+export const MIN_MIN = 1;
+
+export const MIN_TIME = 1;
+export const MAX_TIME = MAX_MIN * 60;
 
 export type TimerType = 'pomodoro' | 'short-break' | 'long-break';
 export type TimerStatusType = 'paused' | 'running' | 'ready' | 'error';
@@ -26,9 +31,9 @@ export const timerStatusState = atom<TimerStatusType>({
 export const timerGoalsState = atom<Record<TimerType, number>>({
   key: 'timerGoalsState',
   default: {
-    pomodoro: 3, // 1500 25분
-    'short-break': 3, // 300 5분
-    'long-break': 3, // 900 15분
+    pomodoro: 1500, // 1500 25분
+    'short-break': 300, // 300 5분
+    'long-break': 900, // 900 15분
   },
 });
 
