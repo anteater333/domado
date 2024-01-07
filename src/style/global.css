@@ -1,0 +1,5 @@
+/* Global Tailwind Custom Styles w/ @apply */
+
+.bg-domadoSky {
+  @apply to-domadoSkyBottom from-domadoSkyTop bg-gradient-to-b;
+}
