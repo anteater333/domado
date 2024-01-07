@@ -26,9 +26,9 @@ export const timerStatusState = atom<TimerStatusType>({
 export const timerGoalsState = atom<Record<TimerType, number>>({
   key: 'timerGoalsState',
   default: {
-    pomodoro: 1500, // 1500 25분
-    'short-break': 300, // 300 5분
-    'long-break': 900, // 900 15분
+    pomodoro: 3, // 1500 25분
+    'short-break': 3, // 300 5분
+    'long-break': 3, // 900 15분
   },
 });
 
@@ -74,15 +74,6 @@ export const formattedTimerState = selector<string>({
       seconds % 60
     }`;
   },
-});
-
-/**
- * 타이머가 종료되었을 때 토글되는 Boolean 상태.
- * 필요한 컴포넌트에서 이 값을 useEffect로 관측해 이벤트를 탐지.
- */
-export const timerDoneState = atom<boolean>({
-  key: 'timerDoneState',
-  default: false,
 });
 
 /**
