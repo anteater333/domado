@@ -2345,6 +2345,7 @@ __metadata:
     react-dom: "npm:^18.2.0"
     react-router-dom: "npm:^6.21.1"
     recoil: "npm:^0.7.7"
+    recoil-persist: "npm:^5.1.0"
     tailwindcss: "npm:^3.4.0"
     ts-jest: "npm:^29.1.1"
     ts-node: "npm:^10.9.2"
@@ -4791,6 +4792,15 @@ __metadata:
   dependencies:
     picomatch: "npm:^2.2.1"
   checksum: 196b30ef6ccf9b6e18c4e1724b7334f72a093d011a99f3b5920470f0b3406a51770867b3e1ae9711f227ef7a7065982f6ee2ce316746b2cb42c88efe44297fe7
+  languageName: node
+  linkType: hard
+
+"recoil-persist@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "recoil-persist@npm:5.1.0"
+  peerDependencies:
+    recoil: ^0.7.2
+  checksum: 979a199862d6aad63f7917700a23528264801b048ae5c7c6805b468e8d1b485d205802caf9170fc0dcdc7aac084643fe0074340b9607aaacef6097e4283f100a
   languageName: node
   linkType: hard
 

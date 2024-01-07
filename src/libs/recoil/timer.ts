@@ -1,4 +1,10 @@
 import { DefaultValue, atom, selector } from 'recoil';
+import { recoilPersist } from 'recoil-persist';
+
+const { persistAtom } = recoilPersist({
+  key: 'localStorage',
+  storage: localStorage,
+});
 
 export const MAX_PERIOD = 16;
 export const MIN_PERIOD = 1;
@@ -9,12 +15,13 @@ export const MIN_TIME = 1;
 export const MAX_TIME = MAX_MIN * 60;
 
 export type TimerType = 'pomodoro' | 'short-break' | 'long-break';
-export type TimerStatusType = 'paused' | 'running' | 'ready' | 'error';
 
 export const timerTypeState = atom<TimerType>({
   key: 'timerTypeState',
   default: 'pomodoro',
 });
+
+export type TimerStatusType = 'paused' | 'running' | 'ready' | 'error';
 
 /**
  * 전역 타이머의 진행 상태
@@ -35,6 +42,7 @@ export const timerGoalsState = atom<Record<TimerType, number>>({
     'short-break': 300, // 300 5분
     'long-break': 900, // 900 15분
   },
+  effects_UNSTABLE: [persistAtom],
 });
 
 /**
@@ -95,6 +103,7 @@ export const pomodoroState = atom<number>({
 export const longBreakPeriodState = atom<number>({
   key: 'longBreakPeriodState',
   default: 4,
+  effects_UNSTABLE: [persistAtom],
 });
 
 /**
