@@ -1,3 +1,4 @@
+import { useNotification } from '@/hooks/useNotification';
 import {
   currentTimerGoalState,
   pomodoroState,
@@ -5,7 +6,7 @@ import {
   timerState,
   timerStatusState,
 } from '@/libs/recoil/timer';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 /**
@@ -19,8 +20,10 @@ export default function GlobalTimer() {
   const pomodoroTotal = useRecoilValue(pomodoroTotalProgressState);
   const setPomodoroProgress = useSetRecoilState(pomodoroState);
 
+  const { fire: fireNotif } = useNotification();
+
   useEffect(() => {
-    let intervalId = 0;
+    let intervalId: 0 | NodeJS.Timeout = 0;
     switch (timerStatus) {
       case 'running':
         // 타이머 실행
@@ -53,9 +56,16 @@ export default function GlobalTimer() {
       });
       setTimerStatus('ready');
 
-      // TBD 사용자에게 타이머가 다 됐음을 알리는 조금 더 우아한 방법 사용하기
-      setTimeout(() => alert('타이머가 종료되었습니다.'));
+      // 타이머 종료를 알림 (Notification API)
+      fireNotif('도마도 타이머 종료', { body: '타이머가 종료되었습니다.' });
     }
-  }, [pomodoroTotal, setPomodoroProgress, setTimerStatus, timerSeconds]);
+  }, [
+    fireNotif,
+    pomodoroTotal,
+    setPomodoroProgress,
+    setTimerStatus,
+    timerSeconds,
+  ]);
+
   return null;
 }
