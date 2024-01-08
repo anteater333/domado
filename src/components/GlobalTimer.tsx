@@ -52,6 +52,9 @@ export default function GlobalTimer() {
         else return newv;
       });
       setTimerStatus('ready');
+
+      // TBD 사용자에게 타이머가 다 됐음을 알리는 조금 더 우아한 방법 사용하기
+      setTimeout(() => alert('타이머가 종료되었습니다.'));
     }
   }, [pomodoroTotal, setPomodoroProgress, setTimerStatus, timerSeconds]);
   return null;
