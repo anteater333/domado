@@ -10,4 +10,12 @@ export default defineConfig({
       '@': '/src',
     },
   },
+  build: {
+    rollupOptions: {
+      input: {
+        main: './index.html',
+        sw: './sw.js',
+      },
+    },
+  },
 });
