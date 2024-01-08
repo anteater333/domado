@@ -20,7 +20,7 @@ export default function GlobalTimer() {
   const setPomodoroProgress = useSetRecoilState(pomodoroState);
 
   useEffect(() => {
-    let intervalId = 0;
+    let intervalId: 0 | NodeJS.Timeout = 0;
     switch (timerStatus) {
       case 'running':
         // 타이머 실행
