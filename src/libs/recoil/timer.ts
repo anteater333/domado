@@ -21,7 +21,13 @@ export const timerTypeState = atom<TimerType>({
   default: 'pomodoro',
 });
 
-export type TimerStatusType = 'paused' | 'running' | 'ready' | 'error';
+export type TimerStatusType =
+  | 'paused'
+  | 'running'
+  | 'ready'
+  | 'error'
+  | 'done'
+  | 'restart';
 
 /**
  * 전역 타이머의 진행 상태
