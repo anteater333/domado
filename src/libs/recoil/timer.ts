@@ -115,3 +115,11 @@ export const pomodoroTotalProgressState = selector<number>({
     return get(longBreakPeriodState) * 2;
   },
 });
+
+/**
+ * 타이머 종료 시 다음 타이머를 자동으로 실행하는 설정 상태
+ */
+export const isTimerAutoStartState = atom<boolean>({
+  key: 'isTimerAutoStartState',
+  default: false,
+});
