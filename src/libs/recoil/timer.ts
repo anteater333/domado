@@ -128,4 +128,5 @@ export const pomodoroTotalProgressState = selector<number>({
 export const isTimerAutoStartState = atom<boolean>({
   key: 'isTimerAutoStartState',
   default: false,
+  effects_UNSTABLE: [persistAtom],
 });
