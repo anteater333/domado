@@ -4,6 +4,7 @@ import {
   MIN_MIN,
   MIN_PERIOD,
   formattedTimerState,
+  isTimerAutoStartState,
   longBreakPeriodState,
   timerStatusState,
   timerTypeState,
@@ -25,6 +26,9 @@ function PreferenceScreen() {
   const [longBreakPeriod, setLongBreakPeriod] =
     useRecoilState(longBreakPeriodState);
   const timerStatus = useRecoilValue(timerStatusState);
+  const [isTimerAutoStart, setIsTimerAutoStart] = useRecoilState(
+    isTimerAutoStartState,
+  );
 
   // input states
   const [inputPeriod, setInputPeriod] = useState(longBreakPeriod);
@@ -33,6 +37,9 @@ function PreferenceScreen() {
   );
   const [inputShort, setInputShort] = useState(timerGoals['short-break'] / 60);
   const [inputLong, setInputLong] = useState(timerGoals['long-break'] / 60);
+
+  const [inputIsTimerAutoStart, setInputIsTimerAutoStart] =
+    useState(isTimerAutoStart);
 
   // input validations
   const onPeriodChange = useCallback(
@@ -108,6 +115,10 @@ function PreferenceScreen() {
     [timerGoals],
   );
 
+  const onAutoStartChange = useCallback(() => {
+    setInputIsTimerAutoStart((prev) => !prev);
+  }, []);
+
   const onSave = useCallback(() => {
     if (inputPeriod > 0) {
       setLongBreakPeriod(inputPeriod);
@@ -129,11 +140,15 @@ function PreferenceScreen() {
     }
 
     setTimerGoals(newGoals);
+
+    setIsTimerAutoStart(inputIsTimerAutoStart);
   }, [
+    inputIsTimerAutoStart,
     inputLong,
     inputPeriod,
     inputPomodoro,
     inputShort,
+    setIsTimerAutoStart,
     setLongBreakPeriod,
     setTimerGoals,
     timerGoals,
@@ -244,6 +259,18 @@ function PreferenceScreen() {
         </div>
         <div className="justify-end">
           {(timerGoals['long-break'] / 60).toFixed(0)}분
+        </div>
+
+        <div className="flex flex-col">타이머 자동 시작</div>
+        <div>{/* empty slot */}</div>
+        <div className="justify-end">
+          {/* 초라하지만 이게 체크박스입니다.*/}
+          <div
+            className="h-8 w-8 cursor-pointer select-none rounded-md border-4 text-center leading-6"
+            onClick={onAutoStartChange}
+          >
+            {inputIsTimerAutoStart ? 'v' : ''}
+          </div>
         </div>
       </div>
 
