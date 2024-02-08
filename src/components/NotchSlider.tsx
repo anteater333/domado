@@ -29,7 +29,10 @@ function NotchSlider() {
                 className="mr-20 flex w-4 min-w-4 flex-col items-center"
               >
                 <span className="mb-2 select-none text-6xl font-bold">{i}</span>
-                <div id={`notch-${i}`} className="h-8 w-2 bg-white"></div>
+                <div
+                  id={`notch-${i}`}
+                  className="h-8 w-2 rounded-md bg-white"
+                ></div>
               </div>
             );
           else
@@ -38,7 +41,10 @@ function NotchSlider() {
                 key={`notch-${i}`}
                 className="mr-20 flex w-4 min-w-4 flex-col items-center"
               >
-                <div id={`notch-${i}`} className="h-4 w-1 bg-white"></div>
+                <div
+                  id={`notch-${i}`}
+                  className="h-4 w-1 rounded-sm bg-white"
+                ></div>
               </div>
             );
         })}
