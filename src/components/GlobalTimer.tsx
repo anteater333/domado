@@ -19,11 +19,12 @@ export default function GlobalTimer() {
   const [timerSeconds, setTimerSeconds] = useRecoilState(timerState);
   const [timerStatus, setTimerStatus] = useRecoilState(timerStatusState);
   const [pomodoroProgress, setPomodoroProgress] = useRecoilState(pomodoroState);
-  const [timerType, setTimerType] = useRecoilState(timerTypeState);
 
   const isTimerAutoStart = useRecoilValue(isTimerAutoStartState);
   const currentTimerGoal = useRecoilValue(currentTimerGoalState);
   const pomodoroTotal = useRecoilValue(pomodoroTotalProgressState);
+
+  const setTimerType = useSetRecoilState(timerTypeState);
 
   const { fire: fireNotif } = useNotification();
 
