@@ -14,12 +14,16 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { timerGoalsState } from '@/libs/recoil/timer';
 import React, { useCallback, useState } from 'react';
 import { isInteger } from '@/utils/validator';
+import { useToast } from '@/hooks/useToast';
 
 /**
  * PreferenceScreen은 전체 뽀모도로 과정의 설정을 조작한다.
  * @returns
  */
 function PreferenceScreen() {
+  // Toast
+  const toast = useToast();
+
   const timerType = useRecoilValue(timerTypeState);
   const formattedTimer = useRecoilValue(formattedTimerState);
   const [timerGoals, setTimerGoals] = useRecoilState(timerGoalsState);
@@ -142,6 +146,8 @@ function PreferenceScreen() {
     setTimerGoals(newGoals);
 
     setIsTimerAutoStart(inputIsTimerAutoStart);
+
+    toast('설정을 저장했습니다.', 'success');
   }, [
     inputIsTimerAutoStart,
     inputLong,
@@ -152,6 +158,7 @@ function PreferenceScreen() {
     setLongBreakPeriod,
     setTimerGoals,
     timerGoals,
+    toast,
   ]);
 
   return (
