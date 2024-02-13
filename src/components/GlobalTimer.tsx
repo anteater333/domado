@@ -10,6 +10,7 @@ import {
 } from '@/libs/recoil/timer';
 import { useCallback, useEffect } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useToast } from '@/hooks/useToast';
 
 /**
  * 전역 타이머를 관리하는 Dummy Component
@@ -27,6 +28,7 @@ export default function GlobalTimer() {
   const setTimerType = useSetRecoilState(timerTypeState);
 
   const { fire: fireNotif } = useNotification();
+  const toast = useToast();
 
   /**
    * 진행 상태를 증가시키는 함수
@@ -49,6 +51,7 @@ export default function GlobalTimer() {
       case 'skip':
         // 사용자에 의한 타이머 스킵 상태 (Noti, 자동 재시작 동작하지 않음)
         increaseProgress();
+        toast('타이머를 건너 뛰었습니다.');
         setTimerStatus('ready');
         break;
       case 'running':
@@ -69,6 +72,7 @@ export default function GlobalTimer() {
         // 타이머 완료
         // 타이머 종료를 알림 (Notification API)
         fireNotif('도마도 타이머 종료', { body: '타이머가 종료되었습니다.' });
+        toast('타이머가 종료되었습니다.');
         setTimerStatus(isTimerAutoStart ? 'restart' : 'ready');
         break;
       case 'paused':

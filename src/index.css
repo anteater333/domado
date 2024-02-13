@@ -90,3 +90,17 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* Customization for react-toastify */
+:root {
+  --toastify-color-info: #188bff !important;
+  --toastify-color-success: #2e922c !important;
+  --toastify-color-error: #f14d30 !important;
+}
+
+.Toastify__toast-body {
+  font-family: Pretendard;
+  color: #222222;
+  font-weight: bold;
+  font-size: 1rem;
+}
