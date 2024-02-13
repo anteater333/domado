@@ -30,6 +30,9 @@ function MainScreen() {
             else return newVal;
           });
         }}
+        onSkip={() => {
+          setTimerStatus('skip');
+        }}
       />
     </div>
   );

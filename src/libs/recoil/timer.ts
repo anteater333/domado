@@ -27,7 +27,8 @@ export type TimerStatusType =
   | 'ready'
   | 'error'
   | 'done'
-  | 'restart';
+  | 'restart'
+  | 'skip';
 
 /**
  * 전역 타이머의 진행 상태
