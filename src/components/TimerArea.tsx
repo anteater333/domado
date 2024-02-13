@@ -14,6 +14,7 @@ interface TimerAreaProp {
   onPause: () => void;
   onStop: () => void;
   onOneMoreMin: () => void;
+  onSkip: () => void;
 }
 
 /**
@@ -80,8 +81,10 @@ function TimerArea(props: TimerAreaProp) {
             <span className="cursor-default select-none text-6xl">▲</span>
             <span className="cursor-default select-none text-2xl"></span>
           </div>
-          <div className="mt-4">
-            <span className="text-6xl font-bold">{formattedTimer}</span>
+          <div className="mt-4 cursor-pointer" onClick={props.onSkip}>
+            <span className="select-none text-6xl font-bold">
+              {formattedTimer}
+            </span>
           </div>
           <div className="flex flex-1 flex-col-reverse items-center gap-4">
             <div

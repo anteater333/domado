@@ -8,7 +8,7 @@ import {
   timerStatusState,
   timerTypeState,
 } from '@/libs/recoil/timer';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 /**
@@ -19,27 +19,47 @@ export default function GlobalTimer() {
   const [timerSeconds, setTimerSeconds] = useRecoilState(timerState);
   const [timerStatus, setTimerStatus] = useRecoilState(timerStatusState);
   const [pomodoroProgress, setPomodoroProgress] = useRecoilState(pomodoroState);
-  const [timerType, setTimerType] = useRecoilState(timerTypeState);
 
   const isTimerAutoStart = useRecoilValue(isTimerAutoStartState);
   const currentTimerGoal = useRecoilValue(currentTimerGoalState);
   const pomodoroTotal = useRecoilValue(pomodoroTotalProgressState);
 
+  const setTimerType = useSetRecoilState(timerTypeState);
+
   const { fire: fireNotif } = useNotification();
 
+  /**
+   * 진행 상태를 증가시키는 함수
+   */
+  const increaseProgress = useCallback(() => {
+    setPomodoroProgress((prev) => (prev + 1) % pomodoroTotal);
+  }, [pomodoroTotal, setPomodoroProgress]);
+
+  /**
+   * 타이머 상태 변화를 감지하는 useEffect 훅
+   */
   useEffect(() => {
     let intervalId: 0 | NodeJS.Timeout = 0;
     switch (timerStatus) {
       case 'restart':
+        // 타이머 자동 시작을 위한 중간 상태
         setTimerSeconds(currentTimerGoal);
-
         setTimerStatus('running');
+        break;
+      case 'skip':
+        // 사용자에 의한 타이머 스킵 상태 (Noti, 자동 재시작 동작하지 않음)
+        increaseProgress();
+        setTimerStatus('ready');
         break;
       case 'running':
         // 타이머 실행
-        intervalId = setInterval(() => {
-          setTimerSeconds((sec) => sec - 1);
-        }, 1000);
+        intervalId = setInterval(
+          /** THE TIMER */
+          () => {
+            setTimerSeconds((sec) => sec - 1);
+          },
+          1000,
+        );
         break;
       case 'ready':
         // 타이머 정지 (초기화)
@@ -47,12 +67,9 @@ export default function GlobalTimer() {
         break;
       case 'done':
         // 타이머 완료
-
         // 타이머 종료를 알림 (Notification API)
         fireNotif('도마도 타이머 종료', { body: '타이머가 종료되었습니다.' });
-
         setTimerStatus(isTimerAutoStart ? 'restart' : 'ready');
-
         break;
       case 'paused':
       case 'error':
@@ -70,20 +87,19 @@ export default function GlobalTimer() {
     setTimerStatus,
     fireNotif,
     isTimerAutoStart,
+    increaseProgress,
   ]);
 
+  /**
+   * 타이머 시간 종료를 감지하는 useEffect 훅
+   */
   useEffect(() => {
     if (timerSeconds <= 0) {
-      // 타이머 종료 시 뽀모도로 진행도를 1 올리고 타이머 초기화
-      setPomodoroProgress((prev) => {
-        const newv = prev + 1;
-        if (newv >= pomodoroTotal) return 0;
-        else return newv;
-      });
+      increaseProgress();
 
       setTimerStatus('done');
     }
-  }, [pomodoroTotal, setPomodoroProgress, setTimerStatus, timerSeconds]);
+  }, [increaseProgress, setTimerStatus, timerSeconds]);
 
   /*
    * 진행상태에 따라 타이머 타입을 변경

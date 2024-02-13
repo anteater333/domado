@@ -1,14 +1,6 @@
 import TimerArea from '@/components/TimerArea';
-import {
-  MAX_TIME,
-  pomodoroState,
-  pomodoroTotalProgressState,
-  timerState,
-  timerStatusState,
-  timerTypeState,
-} from '@/libs/recoil/timer';
-import { useEffect } from 'react';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { MAX_TIME, timerState, timerStatusState } from '@/libs/recoil/timer';
+import { useSetRecoilState } from 'recoil';
 
 /**
  * MainScreen은 TimerArea를 포함하고 있다.
@@ -37,6 +29,10 @@ function MainScreen() {
             if (newVal > MAX_TIME) return MAX_TIME;
             else return newVal;
           });
+        }}
+        onSkip={() => {
+          if (confirm('현재 타이머를 건너 뜁니다.\n(취소할 수 없습니다.)'))
+            setTimerStatus('skip');
         }}
       />
     </div>
