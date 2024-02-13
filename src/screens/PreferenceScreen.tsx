@@ -116,8 +116,8 @@ function PreferenceScreen() {
   );
 
   const onAutoStartChange = useCallback(() => {
-    setInputIsTimerAutoStart((prev) => !prev);
-  }, []);
+    if (timerStatus === 'ready') setInputIsTimerAutoStart((prev) => !prev);
+  }, [timerStatus]);
 
   const onSave = useCallback(() => {
     if (inputPeriod > 0) {
