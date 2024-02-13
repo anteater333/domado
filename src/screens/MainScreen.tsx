@@ -31,7 +31,8 @@ function MainScreen() {
           });
         }}
         onSkip={() => {
-          setTimerStatus('skip');
+          if (confirm('현재 타이머를 건너 뜁니다.\n(취소할 수 없습니다.)'))
+            setTimerStatus('skip');
         }}
       />
     </div>
