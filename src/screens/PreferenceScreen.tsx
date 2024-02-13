@@ -15,6 +15,8 @@ import { timerGoalsState } from '@/libs/recoil/timer';
 import React, { useCallback, useState } from 'react';
 import { isInteger } from '@/utils/validator';
 
+import { toast } from 'react-toastify';
+
 /**
  * PreferenceScreen은 전체 뽀모도로 과정의 설정을 조작한다.
  * @returns
@@ -142,6 +144,8 @@ function PreferenceScreen() {
     setTimerGoals(newGoals);
 
     setIsTimerAutoStart(inputIsTimerAutoStart);
+
+    toast('저장되었습니다.'); // toast package 설치 후 테스팅 코드
   }, [
     inputIsTimerAutoStart,
     inputLong,

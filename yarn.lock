@@ -2112,6 +2112,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"clsx@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "clsx@npm:2.1.0"
+  checksum: 2e0ce7c3b6803d74fc8147c408f88e79245583202ac14abd9691e2aebb9f312de44270b79154320d10bb7804a9197869635d1291741084826cff20820f31542b
+  languageName: node
+  linkType: hard
+
 "co@npm:^4.6.0":
   version: 4.6.0
   resolution: "co@npm:4.6.0"
@@ -2344,6 +2351,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-router-dom: "npm:^6.21.1"
+    react-toastify: "npm:^10.0.4"
     recoil: "npm:^0.7.7"
     recoil-persist: "npm:^5.1.0"
     tailwindcss: "npm:^3.4.0"
@@ -2353,6 +2361,8 @@ __metadata:
     vite: "npm:^5.0.8"
   dependenciesMeta:
     prettier-plugin-tailwindcss@0.5.9:
+      unplugged: true
+    react-toastify@10.0.4:
       unplugged: true
   languageName: unknown
   linkType: soft
@@ -4765,6 +4775,18 @@ __metadata:
   peerDependencies:
     react: ">=16.8"
   checksum: 1220cc75e0c915a26dde9dbb6509a8f0b0163d96e5ad591af91d9bb5a92a18401718f8d872a03d1cb366e7a6216c165a5cadd12375adf97943f37d7f5c487a90
+  languageName: node
+  linkType: hard
+
+"react-toastify@npm:^10.0.4":
+  version: 10.0.4
+  resolution: "react-toastify@npm:10.0.4"
+  dependencies:
+    clsx: "npm:^2.1.0"
+  peerDependencies:
+    react: ">=16"
+    react-dom: ">=16"
+  checksum: 57f4d0032bf328381bdfeb78ab5efa988d425627a61ffa43b0caa184633a0ea44253a349d6b967247fa3d480ad82a2bbaa9063ce3f89be9550eb9b30398a6837
   languageName: node
   linkType: hard
 
