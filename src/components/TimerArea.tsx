@@ -75,13 +75,13 @@ function TimerArea(props: TimerAreaProp) {
               {formattedTimer}
             </span>
           </div>
-          <div className="flex flex-1 flex-col-reverse items-center gap-4">
+          <div className="flex w-full flex-1 flex-col-reverse items-center gap-4">
             <div
               id="play-button-container"
-              className="flex w-96 items-end justify-center gap-4"
+              className="flex w-full items-end justify-center gap-4 px-4  md:text-4xl"
             >
               <button
-                className={`flex-1 transform rounded-3xl border-4 border-white bg-transparent px-0 text-4xl font-bold transition duration-200 hover:border-white hover:bg-white ${
+                className={`max-w-64 flex-1 transform rounded-2xl border-4 border-white bg-transparent font-bold transition duration-200 hover:border-white hover:bg-white md:rounded-3xl ${
                   timerType === 'pomodoro'
                     ? 'hover:text-domadoRed'
                     : timerType === 'short-break'
@@ -96,7 +96,7 @@ function TimerArea(props: TimerAreaProp) {
               </button>
               {timerStatus === 'paused' ? (
                 <button
-                  className={`flex-1 transform rounded-3xl border-4 border-white bg-transparent px-0 text-4xl font-bold transition duration-200 hover:border-white hover:bg-white ${
+                  className={`max-w-64 flex-1 transform rounded-2xl border-4 border-white bg-transparent font-bold transition duration-200 hover:border-white hover:bg-white md:rounded-3xl ${
                     timerType === 'pomodoro'
                       ? 'hover:text-domadoRed'
                       : timerType === 'short-break'

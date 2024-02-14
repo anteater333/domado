@@ -182,7 +182,7 @@ function PreferenceScreen() {
 
       <div
         id="preference-container"
-        className="mx-16 mt-16 grid grid-cols-3 gap-16 text-2xl [&>div]:flex"
+        className="mx-16 mt-16 grid grid-cols-3 gap-16 text-sm md:text-2xl [&>div]:flex"
       >
         <div className="flex flex-col">
           <div>긴 휴식 주기</div>
@@ -262,7 +262,7 @@ function PreferenceScreen() {
         <div className="justify-end">
           {/* 초라하지만 이게 체크박스입니다.*/}
           <div
-            className="h-8 w-8 cursor-pointer select-none rounded-md border-4 text-center leading-6"
+            className="h-5 w-5 cursor-pointer select-none rounded-md border-2 text-center text-sm leading-4 md:h-8 md:w-8 md:border-4 md:text-2xl md:leading-6"
             onClick={onAutoStartChange}
           >
             {inputIsTimerAutoStart ? 'v' : ''}
@@ -273,7 +273,7 @@ function PreferenceScreen() {
       <div className="flex flex-1 flex-col-reverse items-center pb-8">
         {timerStatus !== 'ready' ? undefined : (
           <button
-            className={`transform rounded-3xl border-4 border-white bg-transparent text-4xl font-bold transition duration-200 hover:border-white hover:bg-white ${
+            className={`transform rounded-2xl border-4 border-white bg-transparent font-bold transition duration-200 hover:border-white hover:bg-white md:rounded-3xl md:text-4xl ${
               timerType === 'pomodoro'
                 ? 'hover:text-domadoRed'
                 : timerType === 'short-break'
