@@ -33,7 +33,7 @@ function TimerArea(props: TimerAreaProp) {
       <div id="timer-area" className="flex h-full w-full flex-col">
         <div
           id="timer-upper"
-          className="flex h-full w-full flex-col justify-end pt-4"
+          className="flex h-[90%] w-full flex-col justify-between pt-4"
         >
           <div id="header-area" className="flex justify-center">
             <Link to={'/preference'}>
@@ -56,7 +56,7 @@ function TimerArea(props: TimerAreaProp) {
         </div>
         <div
           id="timer-gap"
-          className="mb-1 mt-2 h-2 w-full bg-black opacity-5"
+          className="mb-1 mt-2 h-2 min-h-1 w-full bg-black opacity-5"
         ></div>
         <div
           id="timer-lower"
@@ -71,11 +71,11 @@ function TimerArea(props: TimerAreaProp) {
             <span className="cursor-default select-none text-2xl"></span>
           </div>
           <div className="mt-4 cursor-pointer" onClick={props.onSkip}>
-            <span className="select-none text-6xl font-bold">
+            <span className="select-none text-5xl font-bold md:text-6xl">
               {formattedTimer}
             </span>
           </div>
-          <div className="mt-8 flex w-full flex-1 flex-col items-center gap-4 md:flex-col-reverse">
+          <div className="mt-12 flex w-full flex-1 flex-col items-center gap-4 md:flex-col-reverse">
             <div
               id="play-button-container"
               className="flex w-full items-end justify-center gap-4 px-4  md:text-4xl"
