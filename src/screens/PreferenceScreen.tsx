@@ -182,95 +182,116 @@ function PreferenceScreen() {
 
       <div
         id="preference-container"
-        className="mx-16 mt-16 grid grid-cols-3 gap-16 text-sm md:text-2xl [&>div]:flex"
+        className="mx-4 mb-8 mt-16 flex flex-col gap-4 text-sm md:mx-16 md:h-full md:justify-around md:text-2xl [&>div]:flex"
       >
-        <div className="flex flex-col">
-          <div>긴 휴식 주기</div>
-          <div>
-            {MIN_PERIOD} ~ {MAX_PERIOD}
+        <div id="preference-slot-1" className="flex justify-between">
+          <div className="flex gap-2">
+            <div>긴 휴식 주기</div>
+            <div>
+              ({MIN_PERIOD} ~ {MAX_PERIOD})
+            </div>
+          </div>
+          <div className="flex gap-1 md:gap-4">
+            <div className="items-start justify-center">
+              <input
+                className="w-12 border-b-2 bg-transparent text-center focus:outline-none md:w-16"
+                value={inputPeriod}
+                onChange={onPeriodChange}
+                disabled={timerStatus !== 'ready'}
+              />
+              회
+            </div>
+            <div className="w-12 justify-end text-right md:w-16">
+              {longBreakPeriod}회
+            </div>
           </div>
         </div>
-        <div className="items-start justify-center">
-          <input
-            className="w-16 border-b-2 bg-transparent text-center focus:outline-none"
-            value={inputPeriod}
-            onChange={onPeriodChange}
-            disabled={timerStatus !== 'ready'}
-          />
-        </div>
-        <div className="justify-end">{longBreakPeriod}</div>
 
-        <div className="flex flex-col">
-          <div>뽀모도로 타이머</div>
-          <div>
-            {MIN_MIN} ~ {MAX_MIN}
+        <div id="preference-slot-2" className="flex justify-between">
+          <div className="flex gap-2">
+            <div>뽀모도로 타이머</div>
+            <div>
+              ({MIN_MIN} ~ {MAX_MIN})
+            </div>
+          </div>
+          <div className="flex gap-1 md:gap-4">
+            <div className="items-start justify-center">
+              <input
+                className="w-12 border-b-2 bg-transparent text-center focus:outline-none md:w-16"
+                value={inputPomodoro}
+                onChange={onPomodoroChange}
+                disabled={timerStatus !== 'ready'}
+              />
+              분
+            </div>
+            <div className="w-12 justify-end text-right md:w-16">
+              {(timerGoals['pomodoro'] / 60).toFixed(0)}분
+            </div>
           </div>
         </div>
-        <div className="items-start justify-center">
-          <input
-            className="w-16 border-b-2 bg-transparent text-center focus:outline-none"
-            value={inputPomodoro}
-            onChange={onPomodoroChange}
-            disabled={timerStatus !== 'ready'}
-          />
-          분
-        </div>
-        <div className="justify-end">
-          {(timerGoals['pomodoro'] / 60).toFixed(0)}분
-        </div>
 
-        <div className="flex flex-col">
-          <div>짧은 휴식 타이머</div>
-          <div>
-            {MIN_MIN} ~ {MAX_MIN}
+        <div id="preference-slot-3" className="flex justify-between">
+          <div className="flex gap-2">
+            <div>짧은 휴식 타이머</div>
+            <div>
+              ({MIN_MIN} ~ {MAX_MIN})
+            </div>
+          </div>
+          <div className="flex gap-1 md:gap-4">
+            <div className="items-start justify-center">
+              <input
+                className="w-12 border-b-2 bg-transparent text-center focus:outline-none md:w-16"
+                value={inputShort}
+                onChange={onShortChange}
+                disabled={timerStatus !== 'ready'}
+              />
+              분
+            </div>
+            <div className="w-12 justify-end text-right md:w-16">
+              {(timerGoals['short-break'] / 60).toFixed(0)}분
+            </div>
           </div>
         </div>
-        <div className="items-start justify-center">
-          <input
-            className="w-16 border-b-2 bg-transparent text-center focus:outline-none"
-            value={inputShort}
-            onChange={onShortChange}
-            disabled={timerStatus !== 'ready'}
-          />
-          분
-        </div>
-        <div className="justify-end">
-          {(timerGoals['short-break'] / 60).toFixed(0)}분
-        </div>
 
-        <div className="flex flex-col">
-          <div>긴 휴식 타이머</div>
-          <div>
-            {MIN_MIN} ~ {MAX_MIN}
+        <div id="preference-slot-4" className="flex justify-between">
+          <div className="flex gap-2">
+            <div>긴 휴식 타이머</div>
+            <div>
+              ({MIN_MIN} ~ {MAX_MIN})
+            </div>
+          </div>
+          <div className="flex gap-1 md:gap-4">
+            <div className="items-start justify-center">
+              <input
+                className="w-12 border-b-2 bg-transparent text-center focus:outline-none md:w-16"
+                value={inputLong}
+                onChange={onLongChange}
+                disabled={timerStatus !== 'ready'}
+              />
+              분
+            </div>
+            <div className="w-12 justify-end text-right md:w-16">
+              {(timerGoals['long-break'] / 60).toFixed(0)}분
+            </div>
           </div>
         </div>
-        <div className="items-start justify-center">
-          <input
-            className="w-16 border-b-2 bg-transparent text-center focus:outline-none"
-            value={inputLong}
-            onChange={onLongChange}
-            disabled={timerStatus !== 'ready'}
-          />
-          분
-        </div>
-        <div className="justify-end">
-          {(timerGoals['long-break'] / 60).toFixed(0)}분
-        </div>
 
-        <div className="flex flex-col">타이머 자동 시작</div>
-        <div>{/* empty slot */}</div>
-        <div className="justify-end">
-          {/* 초라하지만 이게 체크박스입니다.*/}
-          <div
-            className="h-5 w-5 cursor-pointer select-none rounded-md border-2 text-center text-sm leading-4 md:h-8 md:w-8 md:border-4 md:text-2xl md:leading-6"
-            onClick={onAutoStartChange}
-          >
-            {inputIsTimerAutoStart ? 'v' : ''}
+        <div id="preference-slot-5" className="flex justify-between">
+          <div className="flex gap-2">타이머 자동 시작</div>
+          <div>{/* empty slot */}</div>
+          <div>
+            {/* 초라하지만 이게 체크박스입니다.*/}
+            <div
+              className="h-5 w-5 cursor-pointer select-none rounded-md border-2 text-center text-sm leading-4 md:h-8 md:w-8 md:border-4 md:text-2xl md:leading-6"
+              onClick={onAutoStartChange}
+            >
+              {inputIsTimerAutoStart ? 'v' : ''}
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col-reverse items-center pb-8">
+      <div className="flex flex-1 flex-col items-center pb-8">
         {timerStatus !== 'ready' ? undefined : (
           <button
             className={`transform rounded-2xl border-4 border-white bg-transparent font-bold transition duration-200 hover:border-white hover:bg-white md:rounded-3xl md:text-4xl ${
