@@ -171,10 +171,10 @@ function PreferenceScreen() {
         </Link>
       </div>
 
-      <div className="mt-5 flex flex-col items-center justify-center font-santokki">
-        <span className="text-3xl">domado</span>
-        <span className="text-8xl">도마도</span>
-        <span className="text-4xl">설정</span>
+      <div className="mt-1 flex flex-col items-center justify-center font-santokki md:mt-5">
+        <span className="text-2xl md:text-3xl">domado</span>
+        <span className="text-6xl md:text-8xl">도마도</span>
+        <span className="text-2xl md:text-4xl">설정</span>
         {timerStatus !== 'ready' ? (
           <span>타이머를 정지해주세요.</span>
         ) : undefined}

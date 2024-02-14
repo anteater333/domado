@@ -40,10 +40,10 @@ function TimerArea(props: TimerAreaProp) {
               <ProgressIndicator />
             </Link>
           </div>
-          <div className="mt-8 flex flex-1 flex-col items-center font-santokki">
-            <span className="text-3xl">domado</span>
-            <span className="text-8xl">도마도</span>
-            <span className="text-4xl">
+          <div className="mt-4 flex flex-1 flex-col items-center font-santokki md:mt-8">
+            <span className="text-2xl md:text-3xl">domado</span>
+            <span className="text-6xl md:text-8xl">도마도</span>
+            <span className="text-2xl md:text-4xl">
               {timerType === 'pomodoro'
                 ? '뽀모도로'
                 : timerType === 'short-break'
@@ -75,7 +75,7 @@ function TimerArea(props: TimerAreaProp) {
               {formattedTimer}
             </span>
           </div>
-          <div className="flex w-full flex-1 flex-col-reverse items-center gap-4">
+          <div className="mt-8 flex w-full flex-1 flex-col items-center gap-4 md:flex-col-reverse">
             <div
               id="play-button-container"
               className="flex w-full items-end justify-center gap-4 px-4  md:text-4xl"
