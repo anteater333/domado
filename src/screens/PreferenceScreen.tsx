@@ -162,18 +162,7 @@ function PreferenceScreen() {
   ]);
 
   return (
-    <div
-      id="preference-screen-body"
-      className={`
-  flex h-full w-full flex-col
-  ${
-    timerType === 'pomodoro'
-      ? 'bg-domadoRed'
-      : timerType === 'short-break'
-        ? 'bg-domadoGreen'
-        : 'bg-domadoSky'
-  }`}
-    >
+    <div id="preference-screen" className="flex h-full w-full flex-col">
       <div id="header-area" className="flex justify-center pt-5">
         <Link to={'/'}>
           <span className="text-4xl font-bold text-white opacity-80 hover:opacity-100">

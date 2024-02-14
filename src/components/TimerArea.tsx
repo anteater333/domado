@@ -30,18 +30,7 @@ function TimerArea(props: TimerAreaProp) {
 
   return (
     <>
-      <div
-        id="timer-area"
-        className={`
-        flex h-full w-full flex-col
-        ${
-          timerType === 'pomodoro'
-            ? 'bg-domadoRed'
-            : timerType === 'short-break'
-              ? 'bg-domadoGreen'
-              : 'bg-domadoSky'
-        }`}
-      >
+      <div id="timer-area" className="flex h-full w-full flex-col">
         <div
           id="timer-upper"
           className="flex h-full w-full flex-col justify-end pt-4"
