@@ -87,7 +87,7 @@ export default function GlobalTimer() {
 
     return () => {
       if (intervalId) clearInterval(intervalId);
-      releaseWakeLock();
+      if (timerStatus === 'running') releaseWakeLock();
     };
   }, [
     currentTimerGoal,
