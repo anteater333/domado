@@ -11,6 +11,7 @@ import {
 import { useCallback, useEffect } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useToast } from '@/hooks/useToast';
+import { useWakeLock } from '@/hooks/useWakeLock';
 
 /**
  * 전역 타이머를 관리하는 Dummy Component
@@ -29,6 +30,7 @@ export default function GlobalTimer() {
 
   const { fire: fireNotif } = useNotification();
   const toast = useToast();
+  const { releaseWakeLock, requestWakeLock } = useWakeLock();
 
   /**
    * 진행 상태를 증가시키는 함수
@@ -63,6 +65,8 @@ export default function GlobalTimer() {
           },
           1000,
         );
+        // 화면 항상 켜두기 (기능 테스트 중, 추후 옵션 추가 필요)
+        requestWakeLock();
         break;
       case 'ready':
         // 타이머 정지 (초기화)
@@ -83,6 +87,7 @@ export default function GlobalTimer() {
 
     return () => {
       if (intervalId) clearInterval(intervalId);
+      if (timerStatus === 'running') releaseWakeLock();
     };
   }, [
     currentTimerGoal,
@@ -92,6 +97,9 @@ export default function GlobalTimer() {
     fireNotif,
     isTimerAutoStart,
     increaseProgress,
+    toast,
+    requestWakeLock,
+    releaseWakeLock,
   ]);
 
   /**

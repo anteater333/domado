@@ -4,6 +4,7 @@ import {
   MIN_MIN,
   MIN_PERIOD,
   formattedTimerState,
+  isAlwaysOnScreenState,
   isTimerAutoStartState,
   longBreakPeriodState,
   timerStatusState,
@@ -15,6 +16,7 @@ import { timerGoalsState } from '@/libs/recoil/timer';
 import React, { useCallback, useState } from 'react';
 import { isInteger } from '@/utils/validator';
 import { useToast } from '@/hooks/useToast';
+import { useWakeLock } from '@/hooks/useWakeLock';
 
 /**
  * PreferenceScreen은 전체 뽀모도로 과정의 설정을 조작한다.
@@ -24,6 +26,9 @@ function PreferenceScreen() {
   // Toast
   const toast = useToast();
 
+  // Wake Lock 지원 여부
+  const { isSupported } = useWakeLock();
+
   const timerType = useRecoilValue(timerTypeState);
   const formattedTimer = useRecoilValue(formattedTimerState);
   const [timerGoals, setTimerGoals] = useRecoilState(timerGoalsState);
@@ -32,6 +37,9 @@ function PreferenceScreen() {
   const timerStatus = useRecoilValue(timerStatusState);
   const [isTimerAutoStart, setIsTimerAutoStart] = useRecoilState(
     isTimerAutoStartState,
+  );
+  const [isAlwaysOnScreen, setIsAlwaysOnScreen] = useRecoilState(
+    isAlwaysOnScreenState,
   );
 
   // input states
@@ -44,6 +52,8 @@ function PreferenceScreen() {
 
   const [inputIsTimerAutoStart, setInputIsTimerAutoStart] =
     useState(isTimerAutoStart);
+  const [inputIsAlwaysOnScreen, setInputIsAlwaysOnScreen] =
+    useState(isAlwaysOnScreen);
 
   // input validations
   const onPeriodChange = useCallback(
@@ -123,6 +133,13 @@ function PreferenceScreen() {
     if (timerStatus === 'ready') setInputIsTimerAutoStart((prev) => !prev);
   }, [timerStatus]);
 
+  const onAlwaysOnScreenChange = useCallback(() => {
+    if (timerStatus !== 'ready') return;
+
+    if (isSupported) setInputIsAlwaysOnScreen((prev) => !prev);
+    else alert('지원하지 않는 브라우저입니다.');
+  }, [timerStatus, isSupported]);
+
   const onSave = useCallback(() => {
     if (inputPeriod > 0) {
       setLongBreakPeriod(inputPeriod);
@@ -146,19 +163,22 @@ function PreferenceScreen() {
     setTimerGoals(newGoals);
 
     setIsTimerAutoStart(inputIsTimerAutoStart);
+    setIsAlwaysOnScreen(inputIsAlwaysOnScreen);
 
     toast('설정을 저장했습니다.', 'success');
   }, [
-    inputIsTimerAutoStart,
-    inputLong,
     inputPeriod,
+    timerGoals,
     inputPomodoro,
     inputShort,
-    setIsTimerAutoStart,
-    setLongBreakPeriod,
+    inputLong,
     setTimerGoals,
-    timerGoals,
+    setIsTimerAutoStart,
+    inputIsTimerAutoStart,
+    setIsAlwaysOnScreen,
+    inputIsAlwaysOnScreen,
     toast,
+    setLongBreakPeriod,
   ]);
 
   return (
@@ -277,7 +297,7 @@ function PreferenceScreen() {
         </div>
 
         <div id="preference-slot-5" className="flex justify-between">
-          <div className="flex gap-2">타이머 자동 시작</div>
+          <div className="flex gap-2">다음 타이머 자동 시작</div>
           <div>{/* empty slot */}</div>
           <div>
             {/* 초라하지만 이게 체크박스입니다.*/}
@@ -286,6 +306,20 @@ function PreferenceScreen() {
               onClick={onAutoStartChange}
             >
               {inputIsTimerAutoStart ? 'v' : ''}
+            </div>
+          </div>
+        </div>
+
+        <div id="preference-slot-5" className="flex justify-between">
+          <div className="flex gap-2">화면 자동 꺼짐 방지</div>
+          <div>{/* empty slot */}</div>
+          <div className={!isSupported ? 'opacity-50' : ''}>
+            {/* TODO: 위에 있는 체크박스와 같이 컴포넌트화 */}
+            <div
+              className="h-5 w-5 cursor-pointer select-none rounded-md border-2 text-center text-sm leading-4 md:h-8 md:w-8 md:border-4 md:text-2xl md:leading-6"
+              onClick={onAlwaysOnScreenChange}
+            >
+              {!isSupported ? 'x' : inputIsAlwaysOnScreen ? 'v' : ''}
             </div>
           </div>
         </div>

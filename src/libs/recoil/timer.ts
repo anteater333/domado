@@ -131,3 +131,12 @@ export const isTimerAutoStartState = atom<boolean>({
   default: false,
   effects_UNSTABLE: [persistAtom],
 });
+
+/**
+ * 타이머 실행 시 화면을 항상 켜두게 하는 설정 상태
+ */
+export const isAlwaysOnScreenState = atom<boolean>({
+  key: 'isAlwaysOnScreenState',
+  default: false,
+  effects_UNSTABLE: [persistAtom],
+});
