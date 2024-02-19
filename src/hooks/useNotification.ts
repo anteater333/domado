@@ -1,6 +1,17 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 export const useNotification = () => {
+  const [permission, setPermission] = useState<NotificationPermission>(
+    Notification.permission,
+  );
+
+  const requestPermission = useCallback(() => {
+    if (Notification.permission !== 'granted')
+      Notification.requestPermission().then((newPermission) => {
+        setPermission(newPermission);
+      });
+  }, []);
+
   const fire = useCallback(
     async (title: string, options?: NotificationOptions) => {
       try {
@@ -14,5 +25,5 @@ export const useNotification = () => {
     [],
   );
 
-  return { fire };
+  return { permission, requestPermission, fire };
 };
