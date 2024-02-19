@@ -28,7 +28,8 @@ export default function GlobalTimer() {
 
   const setTimerType = useSetRecoilState(timerTypeState);
 
-  const { fire: fireNotif } = useNotification();
+  const { requestPermission: notiPermRequest, fire: fireNotif } =
+    useNotification();
   const toast = useToast();
   const { releaseWakeLock, requestWakeLock } = useWakeLock();
 
@@ -67,6 +68,9 @@ export default function GlobalTimer() {
         );
         // 화면 항상 켜두기 (기능 테스트 중, 추후 옵션 추가 필요)
         requestWakeLock();
+
+        // Notification 기능을 위한 권한 요청
+        notiPermRequest();
         break;
       case 'ready':
         // 타이머 정지 (초기화)
@@ -100,6 +104,7 @@ export default function GlobalTimer() {
     toast,
     requestWakeLock,
     releaseWakeLock,
+    notiPermRequest,
   ]);
 
   /**

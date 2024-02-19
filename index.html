@@ -44,9 +44,10 @@
           .register("/sw.js")
           .then((registration) => {
             console.log("Service worker registration succeeded:", registration);
+            return registration;
           })
           .catch((err) => {
-            console.log("Service worker registration failed:", error);
+            console.log("Service worker registration failed:", err);
           });
       } else {
         console.log("Service workers are not supported.");
