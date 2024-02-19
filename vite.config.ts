@@ -22,7 +22,6 @@ export default ({ mode }) => {
       rollupOptions: {
         input: {
           main: './index.html',
-          sw: './sw.js',
         },
       },
     },
