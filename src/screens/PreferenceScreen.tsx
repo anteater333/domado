@@ -10,7 +10,7 @@ import {
   timerStatusState,
   timerTypeState,
 } from '@/libs/recoil/timer';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { timerGoalsState } from '@/libs/recoil/timer';
 import React, { useCallback, useState } from 'react';
@@ -25,6 +25,9 @@ import { useWakeLock } from '@/hooks/useWakeLock';
 function PreferenceScreen() {
   // Toast
   const toast = useToast();
+
+  // Navigator
+  const navigate = useNavigate();
 
   // Wake Lock 지원 여부
   const { isSupported } = useWakeLock();
@@ -166,6 +169,8 @@ function PreferenceScreen() {
     setIsAlwaysOnScreen(inputIsAlwaysOnScreen);
 
     toast('설정을 저장했습니다.', 'success');
+
+    navigate('/');
   }, [
     inputPeriod,
     timerGoals,
@@ -178,6 +183,7 @@ function PreferenceScreen() {
     setIsAlwaysOnScreen,
     inputIsAlwaysOnScreen,
     toast,
+    navigate,
     setLongBreakPeriod,
   ]);
 
