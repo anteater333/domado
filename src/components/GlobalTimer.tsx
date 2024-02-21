@@ -10,8 +10,11 @@ import {
 } from '@/libs/recoil/timer';
 import { useCallback, useEffect } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+
+/** Custom hooks */
 import { useToast } from '@/hooks/useToast';
 import { useWakeLock } from '@/hooks/useWakeLock';
+import { useTimer } from '@/hooks/useTimer';
 
 /**
  * 전역 타이머를 관리하는 Dummy Component
@@ -32,6 +35,9 @@ export default function GlobalTimer() {
     useNotification();
   const toast = useToast();
   const { releaseWakeLock, requestWakeLock } = useWakeLock();
+  const { startTimer, stopTimer } = useTimer(() =>
+    setTimerSeconds((sec) => sec - 1),
+  );
 
   /**
    * 진행 상태를 증가시키는 함수
@@ -44,7 +50,6 @@ export default function GlobalTimer() {
    * 타이머 상태 변화를 감지하는 useEffect 훅
    */
   useEffect(() => {
-    let intervalId: 0 | NodeJS.Timeout = 0;
     switch (timerStatus) {
       case 'restart':
         // 타이머 자동 시작을 위한 중간 상태
@@ -59,13 +64,8 @@ export default function GlobalTimer() {
         break;
       case 'running':
         // 타이머 실행
-        intervalId = setInterval(
-          /** THE TIMER */
-          () => {
-            setTimerSeconds((sec) => sec - 1);
-          },
-          1000,
-        );
+        startTimer();
+
         // 화면 항상 켜두기 (기능 테스트 중, 추후 옵션 추가 필요)
         requestWakeLock();
 
@@ -90,21 +90,25 @@ export default function GlobalTimer() {
     }
 
     return () => {
-      if (intervalId) clearInterval(intervalId);
-      if (timerStatus === 'running') releaseWakeLock();
+      if (timerStatus === 'running') {
+        stopTimer();
+        releaseWakeLock();
+      }
     };
   }, [
     currentTimerGoal,
-    setTimerSeconds,
-    timerStatus,
-    setTimerStatus,
     fireNotif,
-    isTimerAutoStart,
     increaseProgress,
-    toast,
-    requestWakeLock,
-    releaseWakeLock,
+    isTimerAutoStart,
     notiPermRequest,
+    releaseWakeLock,
+    requestWakeLock,
+    setTimerSeconds,
+    setTimerStatus,
+    startTimer,
+    stopTimer,
+    timerStatus,
+    toast,
   ]);
 
   /**

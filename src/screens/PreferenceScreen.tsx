@@ -220,7 +220,8 @@ function PreferenceScreen() {
           <div className="flex gap-1 md:gap-4">
             <div className="items-start justify-center">
               <input
-                className="w-12 border-b-2 bg-transparent text-center focus:outline-none md:w-16"
+                type="number"
+                className="w-12 border-b-2 bg-transparent text-center [appearance:textfield] focus:outline-none md:w-16 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                 value={inputPeriod}
                 onChange={onPeriodChange}
                 disabled={timerStatus !== 'ready'}
@@ -243,7 +244,8 @@ function PreferenceScreen() {
           <div className="flex gap-1 md:gap-4">
             <div className="items-start justify-center">
               <input
-                className="w-12 border-b-2 bg-transparent text-center focus:outline-none md:w-16"
+                type="number"
+                className="w-12 border-b-2 bg-transparent text-center [appearance:textfield] focus:outline-none md:w-16 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                 value={inputPomodoro}
                 onChange={onPomodoroChange}
                 disabled={timerStatus !== 'ready'}
@@ -266,7 +268,8 @@ function PreferenceScreen() {
           <div className="flex gap-1 md:gap-4">
             <div className="items-start justify-center">
               <input
-                className="w-12 border-b-2 bg-transparent text-center focus:outline-none md:w-16"
+                type="number"
+                className="w-12 border-b-2 bg-transparent text-center [appearance:textfield] focus:outline-none md:w-16 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                 value={inputShort}
                 onChange={onShortChange}
                 disabled={timerStatus !== 'ready'}
@@ -289,7 +292,8 @@ function PreferenceScreen() {
           <div className="flex gap-1 md:gap-4">
             <div className="items-start justify-center">
               <input
-                className="w-12 border-b-2 bg-transparent text-center focus:outline-none md:w-16"
+                type="number"
+                className="w-12 border-b-2 bg-transparent text-center [appearance:textfield] focus:outline-none md:w-16 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                 value={inputLong}
                 onChange={onLongChange}
                 disabled={timerStatus !== 'ready'}
