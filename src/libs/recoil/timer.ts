@@ -140,3 +140,12 @@ export const isAlwaysOnScreenState = atom<boolean>({
   default: false,
   effects_UNSTABLE: [persistAtom],
 });
+
+/**
+ * 타이머 완료 시 알림벨을 재생하게 하는 설정 상태
+ */
+export const playAlarmOnTimerDoneState = atom<boolean>({
+  key: 'playAlarmOnTimerDoneState',
+  default: true,
+  effects_UNSTABLE: [persistAtom],
+});
