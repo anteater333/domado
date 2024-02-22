@@ -2,6 +2,7 @@ import { useNotification } from '@/hooks/useNotification';
 import {
   currentTimerGoalState,
   isTimerAutoStartState,
+  playAlarmOnTimerDoneState,
   pomodoroState,
   pomodoroTotalProgressState,
   timerState,
@@ -15,6 +16,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useToast } from '@/hooks/useToast';
 import { useWakeLock } from '@/hooks/useWakeLock';
 import { useTimer } from '@/hooks/useTimer';
+import { useBell } from '@/hooks/useBell';
 
 /**
  * 전역 타이머를 관리하는 Dummy Component
@@ -26,6 +28,7 @@ export default function GlobalTimer() {
   const [pomodoroProgress, setPomodoroProgress] = useRecoilState(pomodoroState);
 
   const isTimerAutoStart = useRecoilValue(isTimerAutoStartState);
+  const playAlarmOnTimerDone = useRecoilValue(playAlarmOnTimerDoneState);
   const currentTimerGoal = useRecoilValue(currentTimerGoalState);
   const pomodoroTotal = useRecoilValue(pomodoroTotalProgressState);
 
@@ -38,6 +41,7 @@ export default function GlobalTimer() {
   const { startTimer, stopTimer } = useTimer(() =>
     setTimerSeconds((sec) => sec - 1),
   );
+  const { playBell, stopBell } = useBell();
 
   /**
    * 진행 상태를 증가시키는 함수
@@ -48,6 +52,7 @@ export default function GlobalTimer() {
 
   /**
    * 타이머 상태 변화를 감지하는 useEffect 훅
+   * TBD: 훅 하나가 너무 큰것은 아닌가, 미래에 너무 커질 가능성이 있는건 아닌가 검토 필요 (리펙토링)
    */
   useEffect(() => {
     switch (timerStatus) {
@@ -71,6 +76,9 @@ export default function GlobalTimer() {
 
         // Notification 기능을 위한 권한 요청
         notiPermRequest();
+
+        // 재생중이던 알람벨을 끄기
+        stopBell();
         break;
       case 'ready':
         // 타이머 정지 (초기화)
@@ -78,9 +86,15 @@ export default function GlobalTimer() {
         break;
       case 'done':
         // 타이머 완료
+
         // 타이머 종료를 알림 (Notification API)
         fireNotif('도마도 타이머 종료', { body: '타이머가 종료되었습니다.' });
+        // 토스트 알림
         toast('타이머가 종료되었습니다.');
+        // 소리로 알림
+        if (playAlarmOnTimerDone) playBell();
+
+        // 알림들 수행 후 다음 상태로 전환
         setTimerStatus(isTimerAutoStart ? 'restart' : 'ready');
         break;
       case 'paused':
@@ -96,6 +110,9 @@ export default function GlobalTimer() {
       }
     };
   }, [
+    playBell,
+    stopBell,
+    playAlarmOnTimerDone,
     currentTimerGoal,
     fireNotif,
     increaseProgress,
