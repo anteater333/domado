@@ -5,11 +5,12 @@ import {
   playAlarmOnTimerDoneState,
   pomodoroState,
   pomodoroTotalProgressState,
+  timeRemainingState,
   timerState,
   timerStatusState,
   timerTypeState,
 } from '@/libs/recoil/timer';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 /** Custom hooks */
@@ -23,9 +24,11 @@ import { useBell } from '@/hooks/useBell';
  * @returns
  */
 export default function GlobalTimer() {
+  // Global States
   const [timerSeconds, setTimerSeconds] = useRecoilState(timerState);
   const [timerStatus, setTimerStatus] = useRecoilState(timerStatusState);
   const [pomodoroProgress, setPomodoroProgress] = useRecoilState(pomodoroState);
+  const [timeRemaining, setTimeRemaining] = useRecoilState(timeRemainingState);
 
   const isTimerAutoStart = useRecoilValue(isTimerAutoStartState);
   const playAlarmOnTimerDone = useRecoilValue(playAlarmOnTimerDoneState);
@@ -34,13 +37,34 @@ export default function GlobalTimer() {
 
   const setTimerType = useSetRecoilState(timerTypeState);
 
+  // 정교한 타이머 계산을 위한 Local State 및 Hook
+  /* 타이머 실행시간 */
+  const [timerStartedAt, setTimerStartedAt] = useState<number>(Date.now());
+  const calcTimePassed = useCallback(() => {
+    setTimerSeconds(
+      timeRemaining - Math.floor((Date.now() - timerStartedAt) / 1000),
+    );
+  }, [setTimerSeconds, timerStartedAt, timeRemaining]);
+
+  /** 다음 단계로 넘어가 currentTimerGoal이 바꼈을 때 */
+  useEffect(() => {
+    setTimeRemaining(currentTimerGoal);
+  }, [currentTimerGoal, setTimeRemaining]);
+
+  /** paused 상태에서 정지된 시간 기록 */
+  useEffect(() => {
+    if (timerStatus === 'paused')
+      setTimeRemaining(
+        currentTimerGoal - Math.floor((Date.now() - timerStartedAt) / 1000),
+      );
+  }, [setTimeRemaining, timerStatus, timerStartedAt, currentTimerGoal]);
+
+  // Custom Hooks
   const { requestPermission: notiPermRequest, fire: fireNotif } =
     useNotification();
   const toast = useToast();
   const { releaseWakeLock, requestWakeLock } = useWakeLock();
-  const { startTimer, stopTimer } = useTimer(() =>
-    setTimerSeconds((sec) => sec - 1),
-  );
+  const { startTimer, stopTimer } = useTimer(calcTimePassed);
   const { playBell, stopBell } = useBell();
 
   /**
@@ -58,6 +82,7 @@ export default function GlobalTimer() {
     switch (timerStatus) {
       case 'restart':
         // 타이머 자동 시작을 위한 중간 상태
+        setTimeRemaining(currentTimerGoal);
         setTimerSeconds(currentTimerGoal);
         setTimerStatus('running');
         break;
@@ -68,6 +93,9 @@ export default function GlobalTimer() {
         setTimerStatus('ready');
         break;
       case 'running':
+        // 실행 시간 기록
+        setTimerStartedAt(Date.now());
+
         // 타이머 실행
         startTimer();
 
@@ -78,10 +106,11 @@ export default function GlobalTimer() {
         notiPermRequest();
 
         // 재생중이던 알람벨을 끄기
-        stopBell();
+        if (!isTimerAutoStart) stopBell();
         break;
       case 'ready':
         // 타이머 정지 (초기화)
+        setTimeRemaining(currentTimerGoal);
         setTimerSeconds(currentTimerGoal);
         break;
       case 'done':
@@ -98,6 +127,7 @@ export default function GlobalTimer() {
         setTimerStatus(isTimerAutoStart ? 'restart' : 'ready');
         break;
       case 'paused':
+        break;
       case 'error':
         // 타이머 일시정지
         break;
@@ -126,6 +156,7 @@ export default function GlobalTimer() {
     stopTimer,
     timerStatus,
     toast,
+    setTimeRemaining,
   ]);
 
   /**

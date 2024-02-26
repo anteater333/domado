@@ -82,6 +82,13 @@ export const timerState = atom<number>({
   key: 'timerState',
   default: 1,
 });
+/**
+ * 타이머 실행 및 재시작 시점에 계산되는 타이머 남은 시간 전역 상태
+ */
+export const timeRemainingState = atom<number>({
+  key: 'timerRemainingState',
+  default: 1,
+});
 
 /**
  * mm:ss 형태로 계산된 타이머 상태
