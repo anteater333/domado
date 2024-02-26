@@ -1,5 +1,10 @@
 import TimerArea from '@/components/TimerArea';
-import { MAX_TIME, timerState, timerStatusState } from '@/libs/recoil/timer';
+import {
+  MAX_TIME,
+  timeRemainingState,
+  timerState,
+  timerStatusState,
+} from '@/libs/recoil/timer';
 import { useSetRecoilState } from 'recoil';
 
 /**
@@ -9,6 +14,7 @@ import { useSetRecoilState } from 'recoil';
 function MainScreen() {
   const setTimerStatus = useSetRecoilState(timerStatusState);
   const setTimer = useSetRecoilState(timerState);
+  const setTimeRemaining = useSetRecoilState(timeRemainingState);
 
   return (
     <div id="app-main-screen" className="h-full w-full">
@@ -25,6 +31,11 @@ function MainScreen() {
         onOneMoreMin={() => {
           // 1분 더!
           setTimer((prev) => {
+            const newVal = prev + 60;
+            if (newVal > MAX_TIME) return MAX_TIME;
+            else return newVal;
+          });
+          setTimeRemaining((prev) => {
             const newVal = prev + 60;
             if (newVal > MAX_TIME) return MAX_TIME;
             else return newVal;
