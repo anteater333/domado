@@ -5,6 +5,7 @@ import {
   playAlarmOnTimerDoneState,
   pomodoroState,
   pomodoroTotalProgressState,
+  timeRemainingState,
   timerState,
   timerStatusState,
   timerTypeState,
@@ -27,6 +28,7 @@ export default function GlobalTimer() {
   const [timerSeconds, setTimerSeconds] = useRecoilState(timerState);
   const [timerStatus, setTimerStatus] = useRecoilState(timerStatusState);
   const [pomodoroProgress, setPomodoroProgress] = useRecoilState(pomodoroState);
+  const [timeRemaining, setTimeRemaining] = useRecoilState(timeRemainingState);
 
   const isTimerAutoStart = useRecoilValue(isTimerAutoStartState);
   const playAlarmOnTimerDone = useRecoilValue(playAlarmOnTimerDoneState);
@@ -38,15 +40,24 @@ export default function GlobalTimer() {
   // 정교한 타이머 계산을 위한 Local State 및 Hook
   /* 타이머 실행시간 */
   const [timerStartedAt, setTimerStartedAt] = useState<number>(Date.now());
-  const [timeRemaining, setTimeRemaining] = useState<number>(currentTimerGoal);
   const calcTimePassed = useCallback(() => {
     setTimerSeconds(
       timeRemaining - Math.floor((Date.now() - timerStartedAt) / 1000),
     );
   }, [setTimerSeconds, timerStartedAt, timeRemaining]);
+
+  /** 다음 단계로 넘어가 currentTimerGoal이 바꼈을 때 */
   useEffect(() => {
     setTimeRemaining(currentTimerGoal);
-  }, [currentTimerGoal]);
+  }, [currentTimerGoal, setTimeRemaining]);
+
+  /** paused 상태에서 정지된 시간 기록 */
+  useEffect(() => {
+    if (timerStatus === 'paused')
+      setTimeRemaining(
+        currentTimerGoal - Math.floor((Date.now() - timerStartedAt) / 1000),
+      );
+  }, [setTimeRemaining, timerStatus, timerStartedAt, currentTimerGoal]);
 
   // Custom Hooks
   const { requestPermission: notiPermRequest, fire: fireNotif } =
@@ -115,9 +126,6 @@ export default function GlobalTimer() {
         setTimerStatus(isTimerAutoStart ? 'restart' : 'ready');
         break;
       case 'paused':
-        setTimeRemaining(
-          currentTimerGoal - Math.floor((Date.now() - timerStartedAt) / 1000),
-        );
         break;
       case 'error':
         // 타이머 일시정지
@@ -147,7 +155,6 @@ export default function GlobalTimer() {
     stopTimer,
     timerStatus,
     toast,
-    timerStartedAt,
   ]);
 
   /**
