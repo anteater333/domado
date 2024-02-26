@@ -106,7 +106,7 @@ export default function GlobalTimer() {
         notiPermRequest();
 
         // 재생중이던 알람벨을 끄기
-        stopBell();
+        if (!isTimerAutoStart) stopBell();
         break;
       case 'ready':
         // 타이머 정지 (초기화)
