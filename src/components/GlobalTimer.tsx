@@ -82,6 +82,7 @@ export default function GlobalTimer() {
     switch (timerStatus) {
       case 'restart':
         // 타이머 자동 시작을 위한 중간 상태
+        setTimeRemaining(currentTimerGoal);
         setTimerSeconds(currentTimerGoal);
         setTimerStatus('running');
         break;
@@ -155,6 +156,7 @@ export default function GlobalTimer() {
     stopTimer,
     timerStatus,
     toast,
+    setTimeRemaining,
   ]);
 
   /**
