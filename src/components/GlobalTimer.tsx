@@ -60,8 +60,7 @@ export default function GlobalTimer() {
   }, [setTimeRemaining, timerStatus, timerStartedAt, currentTimerGoal]);
 
   // Custom Hooks
-  const { requestPermission: notiPermRequest, fire: fireNotif } =
-    useNotification();
+  const { fire: fireNotif } = useNotification();
   const toast = useToast();
   const { releaseWakeLock, requestWakeLock } = useWakeLock();
   const { startTimer, stopTimer } = useTimer(calcTimePassed);
@@ -101,9 +100,6 @@ export default function GlobalTimer() {
 
         // 화면 항상 켜두기 (기능 테스트 중, 추후 옵션 추가 필요)
         requestWakeLock();
-
-        // Notification 기능을 위한 권한 요청
-        notiPermRequest();
 
         // 재생중이던 알람벨을 끄기
         if (!isTimerAutoStart) stopBell();
@@ -147,7 +143,6 @@ export default function GlobalTimer() {
     fireNotif,
     increaseProgress,
     isTimerAutoStart,
-    notiPermRequest,
     releaseWakeLock,
     requestWakeLock,
     setTimerSeconds,

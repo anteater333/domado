@@ -17,7 +17,7 @@ export const useNotification = () => {
       try {
         const registration = await navigator.serviceWorker.ready;
 
-        registration.showNotification(title, options);
+        await registration.showNotification(title, options);
       } catch (err) {
         console.error('error from Notification', err);
       }

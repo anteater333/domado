@@ -1,4 +1,5 @@
 import TimerArea from '@/components/TimerArea';
+import { useNotification } from '@/hooks/useNotification';
 import {
   MAX_TIME,
   timeRemainingState,
@@ -16,11 +17,15 @@ function MainScreen() {
   const setTimer = useSetRecoilState(timerState);
   const setTimeRemaining = useSetRecoilState(timeRemainingState);
 
+  const { requestPermission: requestNotiPerm } = useNotification();
+
   return (
     <div id="app-main-screen" className="h-full w-full">
       <TimerArea
         onStart={() => {
           setTimerStatus('running');
+          // Notification 기능을 위한 권한 요청
+          requestNotiPerm();
         }}
         onPause={() => {
           setTimerStatus('paused');
