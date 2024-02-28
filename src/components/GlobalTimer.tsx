@@ -1,6 +1,7 @@
 import { useNotification } from '@/hooks/useNotification';
 import {
   currentTimerGoalState,
+  isAlwaysOnScreenState,
   isTimerAutoStartState,
   playAlarmOnTimerDoneState,
   pomodoroState,
@@ -31,6 +32,7 @@ export default function GlobalTimer() {
   const [timeRemaining, setTimeRemaining] = useRecoilState(timeRemainingState);
 
   const isTimerAutoStart = useRecoilValue(isTimerAutoStartState);
+  const isAlwaysOnScreen = useRecoilValue(isAlwaysOnScreenState);
   const playAlarmOnTimerDone = useRecoilValue(playAlarmOnTimerDoneState);
   const currentTimerGoal = useRecoilValue(currentTimerGoalState);
   const pomodoroTotal = useRecoilValue(pomodoroTotalProgressState);
@@ -60,8 +62,7 @@ export default function GlobalTimer() {
   }, [setTimeRemaining, timerStatus, timerStartedAt, currentTimerGoal]);
 
   // Custom Hooks
-  const { requestPermission: notiPermRequest, fire: fireNotif } =
-    useNotification();
+  const { fire: fireNotif } = useNotification();
   const toast = useToast();
   const { releaseWakeLock, requestWakeLock } = useWakeLock();
   const { startTimer, stopTimer } = useTimer(calcTimePassed);
@@ -99,11 +100,8 @@ export default function GlobalTimer() {
         // 타이머 실행
         startTimer();
 
-        // 화면 항상 켜두기 (기능 테스트 중, 추후 옵션 추가 필요)
-        requestWakeLock();
-
-        // Notification 기능을 위한 권한 요청
-        notiPermRequest();
+        // 화면 항상 켜두기
+        if (isAlwaysOnScreen) requestWakeLock();
 
         // 재생중이던 알람벨을 끄기
         if (!isTimerAutoStart) stopBell();
@@ -140,23 +138,23 @@ export default function GlobalTimer() {
       }
     };
   }, [
-    playBell,
-    stopBell,
-    playAlarmOnTimerDone,
     currentTimerGoal,
     fireNotif,
     increaseProgress,
+    isAlwaysOnScreen,
     isTimerAutoStart,
-    notiPermRequest,
+    playAlarmOnTimerDone,
+    playBell,
     releaseWakeLock,
     requestWakeLock,
+    setTimeRemaining,
     setTimerSeconds,
     setTimerStatus,
     startTimer,
+    stopBell,
     stopTimer,
     timerStatus,
     toast,
-    setTimeRemaining,
   ]);
 
   /**
