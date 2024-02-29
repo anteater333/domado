@@ -11,8 +11,12 @@ export const useTimer = (tikCallback: () => void) => {
   }, []);
 
   useEffect(() => {
-    const timerTikHandler = () => {
-      tikCallback();
+    const timerTikHandler = (event: { data: 'tik' }) => {
+      switch (event.data) {
+        case 'tik':
+          tikCallback();
+          break;
+      }
     };
 
     timerWorker.addEventListener('message', timerTikHandler);
@@ -23,11 +27,13 @@ export const useTimer = (tikCallback: () => void) => {
   }, [tikCallback, timerWorker]);
 
   const startTimer = useCallback(() => {
-    timerWorker.postMessage('start');
+    // Web Worker에게 전달 (1초마다 tik 발생 Interval 생성)
+    timerWorker.postMessage({ command: 'start' });
   }, [timerWorker]);
 
   const stopTimer = useCallback(() => {
-    timerWorker.postMessage('stop');
+    timerWorker.postMessage({ command: 'stop' });
+    navigator.serviceWorker.controller?.postMessage({ command: 'stop' });
   }, [timerWorker]);
 
   return {
