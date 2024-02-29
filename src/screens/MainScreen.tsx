@@ -6,14 +6,14 @@ import {
   timerState,
   timerStatusState,
 } from '@/libs/recoil/timer';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 /**
  * MainScreen은 TimerArea를 포함하고 있다.
  * MainScreen은 현재 화면에 표시할 Timer의 정보를 조작한다.
  */
 function MainScreen() {
-  const setTimerStatus = useSetRecoilState(timerStatusState);
+  const [timerStatus, setTimerStatus] = useRecoilState(timerStatusState);
   const setTimer = useSetRecoilState(timerState);
   const setTimeRemaining = useSetRecoilState(timeRemainingState);
 
@@ -47,11 +47,10 @@ function MainScreen() {
           });
         }}
         onSkip={() => {
-          setTimerStatus('paused');
+          if (timerStatus === 'running') setTimerStatus('paused');
           setTimeout(() => {
             if (confirm('현재 타이머를 건너 뜁니다.\n(취소할 수 없습니다.)'))
               setTimerStatus('skip');
-            else setTimerStatus('running');
           });
         }}
       />
