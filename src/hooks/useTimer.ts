@@ -26,19 +26,10 @@ export const useTimer = (tikCallback: () => void) => {
     };
   }, [tikCallback, timerWorker]);
 
-  const startTimer = useCallback(
-    (time: number) => {
-      // Web Worker에게 전달 (1초마다 tik 발생 Interval 생성)
-      timerWorker.postMessage({ command: 'start', time: time });
-
-      // Service Worker에게 전달 (백그라운드 타이머 생성)
-      navigator.serviceWorker.controller?.postMessage({
-        command: 'start',
-        time: time,
-      });
-    },
-    [timerWorker],
-  );
+  const startTimer = useCallback(() => {
+    // Web Worker에게 전달 (1초마다 tik 발생 Interval 생성)
+    timerWorker.postMessage({ command: 'start' });
+  }, [timerWorker]);
 
   const stopTimer = useCallback(() => {
     timerWorker.postMessage({ command: 'stop' });
@@ -46,10 +37,7 @@ export const useTimer = (tikCallback: () => void) => {
   }, [timerWorker]);
 
   return {
-    /**
-     * 타이머 시작
-     * @param time 종료까지 필요한 시간(초)
-     */
+    /** 타이머 시작 */
     startTimer,
     /** 타이머 정지 */
     stopTimer,
