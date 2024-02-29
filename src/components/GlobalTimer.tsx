@@ -98,7 +98,7 @@ export default function GlobalTimer() {
         setTimerStartedAt(Date.now());
 
         // 타이머 실행
-        startTimer();
+        startTimer(timeRemaining);
 
         // 화면 항상 켜두기
         if (isAlwaysOnScreen) requestWakeLock();
@@ -114,10 +114,12 @@ export default function GlobalTimer() {
       case 'done':
         // 타이머 완료
 
-        // 타이머 종료를 알림 (Notification API)
-        fireNotif('도마도 타이머 종료', { body: '타이머가 종료되었습니다.' });
         // 토스트 알림
         toast('타이머가 종료되었습니다.');
+
+        // Notification으로 알림
+        fireNotif('도마도 타이머 종료', { body: '타이머가 종료되었습니다.' });
+
         // 소리로 알림
         if (playAlarmOnTimerDone) playBell();
 
@@ -155,6 +157,7 @@ export default function GlobalTimer() {
     stopTimer,
     timerStatus,
     toast,
+    timeRemaining,
   ]);
 
   /**

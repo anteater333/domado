@@ -22,16 +22,22 @@ export const useTimer = (tikCallback: () => void) => {
     };
   }, [tikCallback, timerWorker]);
 
-  const startTimer = useCallback(() => {
-    timerWorker.postMessage('start');
-  }, [timerWorker]);
+  const startTimer = useCallback(
+    (time: number) => {
+      timerWorker.postMessage({ command: 'start', time: time });
+    },
+    [timerWorker],
+  );
 
   const stopTimer = useCallback(() => {
-    timerWorker.postMessage('stop');
+    timerWorker.postMessage({ command: 'stop' });
   }, [timerWorker]);
 
   return {
-    /** 타이머 시작 */
+    /**
+     * 타이머 시작
+     * @param time 종료까지 필요한 시간(초)
+     */
     startTimer,
     /** 타이머 정지 */
     stopTimer,
