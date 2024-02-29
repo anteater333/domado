@@ -1,4 +1,3 @@
-import { useNotification } from '@/hooks/useNotification';
 import {
   currentTimerGoalState,
   isAlwaysOnScreenState,
@@ -19,6 +18,7 @@ import { useToast } from '@/hooks/useToast';
 import { useWakeLock } from '@/hooks/useWakeLock';
 import { useTimer } from '@/hooks/useTimer';
 import { useBell } from '@/hooks/useBell';
+import { useNotification } from '@/hooks/useNotification';
 
 /**
  * 전역 타이머를 관리하는 Dummy Component
@@ -62,7 +62,7 @@ export default function GlobalTimer() {
   }, [setTimeRemaining, timerStatus, timerStartedAt, currentTimerGoal]);
 
   // Custom Hooks
-  const { fire: fireNotif } = useNotification();
+  const { fire: fireNoti } = useNotification();
   const toast = useToast();
   const { releaseWakeLock, requestWakeLock } = useWakeLock();
   const { startTimer, stopTimer } = useTimer(calcTimePassed);
@@ -114,10 +114,12 @@ export default function GlobalTimer() {
       case 'done':
         // 타이머 완료
 
-        // 타이머 종료를 알림 (Notification API)
-        fireNotif('도마도 타이머 종료', { body: '타이머가 종료되었습니다.' });
         // 토스트 알림
         toast('타이머가 종료되었습니다.');
+
+        // Notification으로 알림
+        fireNoti('도마도 타이머 종료', { body: '타이머가 종료되었습니다.' });
+
         // 소리로 알림
         if (playAlarmOnTimerDone) playBell();
 
@@ -139,7 +141,6 @@ export default function GlobalTimer() {
     };
   }, [
     currentTimerGoal,
-    fireNotif,
     increaseProgress,
     isAlwaysOnScreen,
     isTimerAutoStart,
@@ -155,6 +156,8 @@ export default function GlobalTimer() {
     stopTimer,
     timerStatus,
     toast,
+    timeRemaining,
+    fireNoti,
   ]);
 
   /**
