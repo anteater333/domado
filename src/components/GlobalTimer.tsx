@@ -156,7 +156,6 @@ export default function GlobalTimer() {
     stopTimer,
     timerStatus,
     toast,
-    timeRemaining,
     fireNoti,
   ]);
 
