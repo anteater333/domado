@@ -53,13 +53,14 @@ export default function GlobalTimer() {
     setTimeRemaining(currentTimerGoal);
   }, [currentTimerGoal, setTimeRemaining]);
 
-  /** paused 상태에서 정지된 시간 기록 */
+  /** paused 상태 시 일시정지 이전까지 소모한 시간 기록 */
   useEffect(() => {
-    if (timerStatus === 'paused')
+    if (timerStatus === 'paused') {
       setTimeRemaining(
-        currentTimerGoal - Math.floor((Date.now() - timerStartedAt) / 1000),
+        (prev) => prev - Math.floor((Date.now() - timerStartedAt) / 1000),
       );
-  }, [setTimeRemaining, timerStatus, timerStartedAt, currentTimerGoal]);
+    }
+  }, [setTimeRemaining, timerStatus, timerStartedAt]);
 
   // Custom Hooks
   const { fire: fireNoti } = useNotification();
