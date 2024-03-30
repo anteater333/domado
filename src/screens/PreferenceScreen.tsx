@@ -19,6 +19,8 @@ import { isInteger } from '@/utils/validator';
 import { useToast } from '@/hooks/useToast';
 import { useWakeLock } from '@/hooks/useWakeLock';
 
+import DummyCheckbox from '@/components/DummyCheckbox'; 
+
 /**
  * PreferenceScreen은 전체 뽀모도로 과정의 설정을 조작한다.
  * @returns
@@ -381,6 +383,8 @@ function PreferenceScreen() {
           </button>
         )}
       </div>
+
+      <DummyCheckbox />
     </div>
   );
 }
