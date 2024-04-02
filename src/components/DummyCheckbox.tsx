@@ -1,4 +1,7 @@
+
 import { useState } from 'react';
+
+interface DummyCheckboxProp {}
 
 function DummyCheckbox() {
   const [isChecked, setIsChecked] = useState(false);
