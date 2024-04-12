@@ -109,6 +109,7 @@ export const formattedTimerState = selector<string>({
 export const pomodoroState = atom<number>({
   key: 'pomodoroState',
   default: 0,
+  effects_UNSTABLE: [persistAtom],
 });
 
 /**

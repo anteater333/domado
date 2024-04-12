@@ -2,6 +2,7 @@ import TimerArea from '@/components/TimerArea';
 import { useNotification } from '@/hooks/useNotification';
 import {
   MAX_TIME,
+  pomodoroState,
   timeRemainingState,
   timerState,
   timerStatusState,
@@ -16,6 +17,7 @@ function MainScreen() {
   const [timerStatus, setTimerStatus] = useRecoilState(timerStatusState);
   const setTimer = useSetRecoilState(timerState);
   const setTimeRemaining = useSetRecoilState(timeRemainingState);
+  const setPomodoroProgress = useSetRecoilState(pomodoroState);
 
   const { requestPermission: requestNotiPerm } = useNotification();
 
@@ -49,8 +51,16 @@ function MainScreen() {
         onSkip={() => {
           if (timerStatus === 'running') setTimerStatus('paused');
           setTimeout(() => {
-            if (confirm('현재 타이머를 건너 뜁니다.\n(취소할 수 없습니다.)'))
-              setTimerStatus('skip');
+            if (confirm('현재 타이머를 건너 뜁니다.')) setTimerStatus('skip');
+          });
+        }}
+        onToDefault={() => {
+          if (timerStatus === 'running') setTimerStatus('paused');
+          setTimeout(() => {
+            if (confirm('진행 상태를 초기화합니다.')) {
+              setPomodoroProgress(0);
+              setTimerStatus('ready');
+            }
           });
         }}
       />
