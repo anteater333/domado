@@ -15,6 +15,7 @@ interface TimerAreaProp {
   onStop: () => void;
   onOneMoreMin: () => void;
   onSkip: () => void;
+  onToDefault: () => void;
 }
 
 /**
@@ -41,16 +42,21 @@ function TimerArea(props: TimerAreaProp) {
             </Link>
           </div>
           <div className="mt-4 flex flex-1 flex-col items-center font-santokki md:mt-8">
-            <span className="text-2xl md:text-3xl">domado</span>
-            <span className="text-6xl md:text-8xl">도마도</span>
-            <span className="text-2xl md:text-4xl">
-              {timerType === 'pomodoro'
-                ? '뽀모도로'
-                : timerType === 'short-break'
-                  ? '짧은 휴식'
-                  : '긴 휴식'}{' '}
-              타이머
-            </span>
+            <div
+              className="flex cursor-pointer select-none flex-col items-center"
+              onClick={props.onToDefault}
+            >
+              <span className="text-2xl md:text-3xl">domado</span>
+              <span className="text-6xl md:text-8xl">도마도</span>
+              <span className="text-2xl md:text-4xl">
+                {timerType === 'pomodoro'
+                  ? '뽀모도로'
+                  : timerType === 'short-break'
+                    ? '짧은 휴식'
+                    : '긴 휴식'}{' '}
+                타이머
+              </span>
+            </div>
           </div>
           <NotchSlider />
         </div>
