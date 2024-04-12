@@ -19,6 +19,7 @@ import { useWakeLock } from '@/hooks/useWakeLock';
 import { useTimer } from '@/hooks/useTimer';
 import { useBell } from '@/hooks/useBell';
 import { useNotification } from '@/hooks/useNotification';
+import { usePreventLeave } from '@/hooks/usePreventLeave';
 
 /**
  * 전역 타이머를 관리하는 Dummy Component
@@ -68,6 +69,7 @@ export default function GlobalTimer() {
   const { releaseWakeLock, requestWakeLock } = useWakeLock();
   const { startTimer, stopTimer } = useTimer(calcTimePassed);
   const { playBell, stopBell } = useBell();
+  const { enablePrevent, disablePrevent } = usePreventLeave();
 
   /**
    * 진행 상태를 증가시키는 함수
@@ -187,6 +189,11 @@ export default function GlobalTimer() {
       setTimerType('long-break');
     }
   }, [pomodoroProgress, pomodoroTotal, setTimerType]);
+
+  useEffect(() => {
+    if (timerStatus === 'running' || timerStatus === 'paused') enablePrevent();
+    else disablePrevent();
+  }, [disablePrevent, enablePrevent, timerStatus]);
 
   return null;
 }
