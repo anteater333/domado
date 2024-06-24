@@ -13,10 +13,20 @@ export function usePreventLeave() {
     [],
   );
 
-  const enablePrevent = () => window.addEventListener('beforeunload', handler);
+  const enablePrevent = useCallback(
+    () => window.addEventListener('beforeunload', handler),
+    [],
+  );
 
-  const disablePrevent = () =>
-    window.removeEventListener('beforeunload', handler);
+  const disablePrevent = useCallback(
+    () => window.removeEventListener('beforeunload', handler),
+    [],
+  );
 
-  return { enablePrevent, disablePrevent };
+  return {
+    /** 페이지 이탈 방지 기능 활성화 */
+    enablePrevent,
+    /** 페아지 이탈 방지 기능 비활성화 */
+    disablePrevent,
+  };
 }
