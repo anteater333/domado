@@ -192,7 +192,7 @@ export default function GlobalTimer() {
 
   useEffect(() => {
     if (timerStatus === 'running' || timerStatus === 'paused') enablePrevent();
-    else disablePrevent();
+    return () => disablePrevent();
   }, [disablePrevent, enablePrevent, timerStatus]);
 
   return null;
