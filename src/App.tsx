@@ -27,18 +27,22 @@ function App() {
 
   return (
     <>
+      <div
+        id="bg-long-break"
+        className={`ease-in-out duration-300 transition-opacity absolute left-0 top-0 -z-50 h-full w-full bg-domadoSky ${timerType === 'long-break' ? 'opacity-100' : 'opacity-0'}`}
+      />
+      <div
+        id="bg-short-break"
+        className={`ease-in-out duration-300 transition-opacity absolute left-0 top-0 -z-50 h-full w-full bg-domadoGreen ${timerType === 'short-break' ? 'opacity-100' : 'opacity-0'}`}
+      />
+      <div
+        id="bg-pomodoro"
+        className={`ease-in-out duration-300 transition-opacity absolute left-0 top-0 -z-50 h-full w-full bg-domadoRed ${timerType === 'pomodoro' ? 'opacity-100' : 'opacity-0'}`}
+      />
       <GlobalTimer />
       <div
         id="app-body"
-        className={`
-  flex h-full w-full flex-col overflow-scroll
-  ${
-    timerType === 'pomodoro'
-      ? 'bg-domadoRed'
-      : timerType === 'short-break'
-        ? 'bg-domadoGreen'
-        : 'bg-domadoSky'
-  }`}
+        className="flex h-full w-full flex-col overflow-scroll"
       >
         <Routes>
           <Route path="/" element={<MainScreen />} />
